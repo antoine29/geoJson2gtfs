@@ -1,0 +1,32 @@
+{
+  "name": "geojson2gtfs",
+  "version": "1.0.0",
+  "description": "A tiny nodeJs app to transform geoJson files (describing onDemand informal public transport routes) to its corresponding GTFS entities.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antoine29/geoJson2GTFS.git"
+  },
+  "keywords": [
+    "GTFS",
+    "on",
+    "demand",
+    "informal",
+    "public",
+    "transport",
+    "geoJson"
+  ],
+  "author": "Anthony Flores Gomez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/antoine29/geoJson2GTFS/issues"
+  },
+  "homepage": "https://github.com/antoine29/geoJson2GTFS#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0"
+  }
+}
