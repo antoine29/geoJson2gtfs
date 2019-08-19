@@ -1,35 +1,25 @@
 'use strict';
 
 const expect = require('chai').expect;
-const geoJsonFileReader = require('../src/geoJsonFileReader') ;
+const assert = require('chai').assert;
+const geoJsonFileReader = require('../src/geoJsonFileReader');
+const geoJsonObjectValidator = require('../src/geoJsonObjectValidator');
 
-describe('geoJsonFileReader tests:', () => {
-    it('A geoJson file should be readed into an object', () => {
+describe('geoJson file to jsObject tests:', () => {
+    it('A geoJson file should be readed into an js object', () => {
         const geoJsonObject = geoJsonFileReader('./test/geoJsonTestFile.geojson');
-        expect(typeof geoJsonObject === 'object')
+        expect(geoJsonObject).to.be.an('Object')
     });
 
-    it('A geoJson object should have a accurate \'type\' field', () => {
+    it('A valid geoJson object should be correctly validated', () => {
         const geoJsonObject = geoJsonFileReader('./test/geoJsonTestFile.geojson');
-        console.log(geoJsonObject);
-        // expect(geoJsonObject.type && typeof geoJsonObject.type === 'string' && geoJsonObject.type === 'FeatureCollection');
-        expect(geoJsonObject.to.have.property('type'));
+        const validationResult = geoJsonObjectValidator(geoJsonObject);
+        assert.strictEqual(validationResult, true, 'Valid geoJson object');
     });
 
-    // it('A geoJson object should have a accurate \'features\' field', () => {
-    //     let geoJsonObject = geoJsonFileReader('./test/geoJsonTestFile.geojson');
-    //     console.log(geoJsonObject);
-    //     expect(geoJsonObject.features && typeof geoJsonObject.features === 'object' && geoJsonObject.features.length > 0);
-    // });
-
-    // it('A geoJson object should have a accurate \'random\' field', () => {
-    //     let geoJsonObject = geoJsonFileReader('./test/geoJsonTestFile.geojson');
-    //     console.log(geoJsonObject);
-    //     expect(geoJsonObject.random !== undefined && typeof geoJsonObject.random === 'object' && geoJsonObject.random.length > 0);
-    // });
-
-    // it('A geoJson object should have a geometry field with LineString field equals to LineString', () => {
-    //     let geoJsonObject = geoJsonFileReader('./test/geoJsonTestFile.geojson');
-    //     expect(typeof geoJsonObject.features[0]. === 'object')
-    // });
+    it('A invalid geoJson object should be correctly validated', () => {
+        const geoJsonObject = geoJsonFileReader('./test/invalidGeoJsonTestFile.geojson');
+        const validationResult = geoJsonObjectValidator(geoJsonObject);
+        assert.strictEqual(validationResult, false, 'inValid geoJson object');
+    });
 });
