@@ -6,10 +6,18 @@ const geoJsonFileReader = require('../src/geoJsonFileReader');
 const geoJsonToStopsFile = require('../src/geoJsonToStopsFile');
 
 describe('geoJson file to stopsFile tests:', () => {
-    it('A geoJson file should be converted to an accurate js object list', () => {
+    it('A geoJson file should be converted to an accurate js stopFileObject', () => {
         const geoJsonObject = geoJsonFileReader('./test/geoJsonTestFile.geojson');
         const stops = geoJsonToStopsFile(geoJsonObject);
-        expect(stops).to.be.an('Array');
-        assert.isTrue(stops.length > 0);
+        expect(stops).to.be.an('Object');
+        expect(stops.fields).to.be.an('Array');
+        expect(stops.stops).to.be.an('Array');
+    });
+
+    it('An stopFileObject should have accurate lists fields', () => {
+        const geoJsonObject = geoJsonFileReader('./test/geoJsonTestFile.geojson');
+        const stops = geoJsonToStopsFile(geoJsonObject);
+        assert.isTrue(stops.fields.length > 0);
+        assert.isTrue(stops.stops.length > 0);
     });
 });

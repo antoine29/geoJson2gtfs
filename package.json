@@ -30,6 +30,7 @@
     "mocha": "^6.2.0"
   },
   "dependencies": {
+    "find-key": "^2.1.3",
     "json2csv": "^4.5.2"
   }
 }
