@@ -2,7 +2,7 @@
 
 const expect = require('chai').expect;
 const assert = require('chai').assert;
-const objectFieldsFilter = require('../src/objectFieldsFilter');
+const objectFieldsFilter = require('../src/geoJsonObjectUtils/objectFieldsFilter');
 
 let obj = {
     statename: {},

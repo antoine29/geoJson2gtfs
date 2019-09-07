@@ -2,8 +2,8 @@
 
 const expect = require('chai').expect;
 const assert = require('chai').assert;
-const geoJsonFileReader = require('../src/geoJsonFileReader');
-const geoJsonToStopsFile = require('../src/geoJsonToStopsFile');
+const geoJsonFileReader = require('../src/fileHandlers/geoJsonFileReader');
+const geoJsonToStopsFile = require('../src/geoJsonObjectToCsv/geoJsonToStopsFile');
 
 describe('geoJson file to stopsFile tests:', () => {
     it('A geoJson file should be converted to an accurate js stopFileObject', () => {
