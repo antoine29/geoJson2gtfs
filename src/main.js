@@ -13,11 +13,25 @@ async function main() {
         geoJsonFileReader(geoJsonFileName) : geoJsonFileName;
     
     const validationResult = geoJsonObjectValidator(input);
-    
-    let directions = await coordsArrayToDirectionsArray(input.features[0].geometry.coordinates);
-    console.log(directions);
 
-    console.log("OK");
+    let gtfsFields = {
+        directions: [
+            "a1",
+            "a2",
+            "a3",
+            "a4",
+            "a5"
+        ]
+    };
+
+    input.gtfs = gtfsFields;
+
+    console.log(input);
+
+    geoJsonFileWriter(input, geoJsonFileName);
+    
+    // let directions = await coordsArrayToDirectionsArray(input.features[0].geometry.coordinates);
+    // console.log(directions);
     
     // const stops = geoJsonToStopsFile(input);
     // console.log(stops);
