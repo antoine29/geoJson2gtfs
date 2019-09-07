@@ -3,17 +3,29 @@ const fileWriter = require('./fileHandlers/fileWriter');
 const geoJsonObjectValidator = require('./geoJsonObjectUtils/geoJsonObjectValidator');
 const geoJsonToStopsFile = require('./geoJsonObjectToCsv/geoJsonToStopsFile');
 const geoJsonObjectToCsv = require('./geoJsonObjectToCsv/geoJsonObjectToCsv');
+const coordsArrayToDirectionsArray = require('./geoJsonFileCompleter/coordsArrayToDirectionsArray');
 
-let geoJsonFileName = './test/geoJsonTestFile.geojson';
-const input = typeof geoJsonFileName === "string" ?
-    geoJsonFileReader(geoJsonFileName) : geoJsonFileName;
+async function main() {
+    
+    let geoJsonFileName = './test/fileHandlers_tests/geoJsonTestFile.geojson';
 
-const validationResult = geoJsonObjectValidator(input);
+    const input = typeof geoJsonFileName === "string" ?
+        geoJsonFileReader(geoJsonFileName) : geoJsonFileName;
+    
+    const validationResult = geoJsonObjectValidator(input);
+    
+    let directions = await coordsArrayToDirectionsArray(input.features[0].geometry.coordinates);
+    console.log(directions);
 
-const stops = geoJsonToStopsFile(input);
-console.log(stops);
+    console.log("OK");
+    
+    // const stops = geoJsonToStopsFile(input);
+    // console.log(stops);
+    
+    // let csv = geoJsonObjectToCsv(stops);
+    // console.log(csv);
+    
+    // fileWriter('file.csv', csv);
+}
 
-let csv = geoJsonObjectToCsv(stops);
-console.log(csv);
-
-fileWriter('file.csv', csv);
+main();
