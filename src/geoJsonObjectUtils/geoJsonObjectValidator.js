@@ -29,8 +29,21 @@ function geoJsonObjectFeatureValidator(feature) {
 }
 
 function geoJsonPropertiesFieldValidator(properties) {
-    // ToDo: implement this according the required properties
-    return properties && true;
+    return properties &&
+        typeof properties === 'object' &&
+        properties.constructor === Object &&
+        (
+            (
+                properties.hasOwnProperty("agency") &&
+                (typeof properties.agency === 'string' || properties.agency instanceof String) &&
+                properties.agency.length > 0
+            ) ||
+            (
+                properties.hasOwnProperty("agencia") &&
+                (typeof properties.agencia === 'string' || properties.agencia instanceof String) &&
+                properties.agencia.length > 0
+            )
+        ) 
 }
 
 function geoJsonGeometryValidator(geometry) {

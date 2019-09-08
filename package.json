@@ -4,7 +4,7 @@
   "description": "A tiny nodeJs app to transform geoJson files (describing onDemand informal public transport routes) to its corresponding GTFS entities.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha --recursive"
   },
   "repository": {
     "type": "git",
