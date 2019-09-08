@@ -6,6 +6,9 @@ const geoJsonToStopsFile = require('./geoJsonObjectToCsv/geoJsonToStopsFile');
 const geoJsonObjectToCsv = require('./geoJsonObjectToCsv/geoJsonObjectToCsv');
 const coordsArrayToDirectionsArray = require('./geoJsonFileCompleter/coordsArrayToDirectionsArray');
 
+// gtfs generators
+const gtfsAgencyGenerator = require('./gtfsEntitiesGenerators/agencyGenerator/gtfsAgencyGenerator');
+
 async function main() {
     
     let geoJsonFileName = './src/geoJsonTestFile.geojson';
@@ -15,24 +18,39 @@ async function main() {
     
     
     if (geoJsonObjectValidator(input)) {
-        // let directions = await coordsArrayToDirectionsArray(input.features[0].geometry.coordinates);
-        let directions = [
-            "a1",
-            "a2",
-            "a3",
-            "a4",
-            "a5"
-        ];
-        
-        let gtfsFields = {
-            directions: directions
+
+        let generalSettings = {
+            agencySettings: {
+                agencyTimeZone: "America/Caracas" ,
+                agencyUrl: "https://github.com/antoine29"
+            }
         };
+
+        // Generating an Agency.txt row
+        let agencyRow = gtfsAgencyGenerator();
+
+
+        // make directions using the geoJson coords
+        // let directions = await coordsArrayToDirectionsArray(input.features[0].geometry.coordinates);
+        // let directions = [
+        //     "a1",
+        //     "a2",
+        //     "a3",
+        //     "a4",
+        //     "a5"
+        // ];
         
-        input.gtfs = gtfsFields;
+        // let gtfsFields = {
+        //     directions: directions
+        // };
         
-        geoJsonFileWriter(input, geoJsonFileName);
+        // adding the custom field in the original geoJson object
+        // input.gtfs = gtfsFields;
         
+        // writing (updating) the geoJson file
+        // geoJsonFileWriter(input, geoJsonFileName);
         
+        // Writing a stops file
         // const stops = geoJsonToStopsFile(input);
         // console.log(stops);
         

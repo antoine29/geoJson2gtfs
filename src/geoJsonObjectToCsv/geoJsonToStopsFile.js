@@ -41,6 +41,6 @@ module.exports = function geoJsonToStopsFile(geoJsonObject) {
 
     return {
         fields: getStopsFileFields(),
-        stops: stops
+        values: stops
     };
 };
