@@ -12,4 +12,3 @@ module.exports = function objectFieldsFilter(obj, fields) {
 
     return values;
 };
-

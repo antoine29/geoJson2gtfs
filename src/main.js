@@ -1,4 +1,5 @@
 const geoJsonFileReader = require('./fileHandlers/geoJsonFileReader');
+const geoJsonFileWriter = require('./fileHandlers/geoJsonFileWriter');
 const fileWriter = require('./fileHandlers/fileWriter');
 const geoJsonObjectValidator = require('./geoJsonObjectUtils/geoJsonObjectValidator');
 const geoJsonToStopsFile = require('./geoJsonObjectToCsv/geoJsonToStopsFile');
@@ -7,31 +8,30 @@ const coordsArrayToDirectionsArray = require('./geoJsonFileCompleter/coordsArray
 
 async function main() {
     
-    let geoJsonFileName = './test/fileHandlers_tests/geoJsonTestFile.geojson';
+    let geoJsonFileName = './src/geoJsonTestFile.geojson';
 
     const input = typeof geoJsonFileName === "string" ?
         geoJsonFileReader(geoJsonFileName) : geoJsonFileName;
     
     const validationResult = geoJsonObjectValidator(input);
+    
+    // let directions = await coordsArrayToDirectionsArray(input.features[0].geometry.coordinates);
+    let directions = [
+        "a1",
+        "a2",
+        "a3",
+        "a4",
+        "a5"
+    ];
 
     let gtfsFields = {
-        directions: [
-            "a1",
-            "a2",
-            "a3",
-            "a4",
-            "a5"
-        ]
+        directions: directions
     };
 
     input.gtfs = gtfsFields;
 
-    console.log(input);
-
     geoJsonFileWriter(input, geoJsonFileName);
     
-    // let directions = await coordsArrayToDirectionsArray(input.features[0].geometry.coordinates);
-    // console.log(directions);
     
     // const stops = geoJsonToStopsFile(input);
     // console.log(stops);
