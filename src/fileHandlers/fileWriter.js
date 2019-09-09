@@ -12,7 +12,7 @@ module.exports = function fileWriter(fileName, file) {
     });
     
     writeStream.on('finish', () => {
-        console.log('wrote all data to file');
+        console.log(`${fileName} writing done`);
     });
     
     writeStream.end();

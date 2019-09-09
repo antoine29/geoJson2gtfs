@@ -35,7 +35,11 @@ function getAgencyUrl(settings) {
     throw "The settings file must have a agencySettings.agencyUrl field";
 }
 
-module.exports = function gtfsAgencyGenerator(geoJsonObject, settings) {
+exports.exportGetAgencyId =  function (geoJsonObject) {
+    return getAgencyId(geoJsonObject);
+}
+
+exports.gtfsAgencyGenerator = function (geoJsonObject, settings) {
     return {
         fields: gtfsAgencyFileFields(),
         values: [
