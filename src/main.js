@@ -5,11 +5,9 @@ const geoJsonObjectValidator = require('./geoJsonObjectUtils/geoJsonObjectValida
 const geoJsonToStopsFile = require('./geoJsonObjectToCsv/geoJsonToStopsFile');
 const geoJsonObjectToCsv = require('./geoJsonObjectToCsv/geoJsonObjectToCsv');
 const coordsArrayToDirectionsArray = require('./geoJsonFileCompleter/coordsArrayToDirectionsArray');
-
-// fs-extra utils
 const fse = require('./fileHandlers/fs-extraUtils');
-// gtfs generators
 const gtfsAgencyGenerator = require('./gtfsEntitiesGenerators/agencyGenerator/gtfsAgencyGenerator');
+const gtfsCalendarGenerator = require('./gtfsEntitiesGenerators/calendarObjectGenerator/gtfsCalendarObjectGenerator');
 
 async function main() {
     
@@ -25,18 +23,36 @@ async function main() {
             agencySettings: {
                 agencyTimeZone: "America/Caracas" ,
                 agencyUrl: "https://github.com/antoine29"
+            },
+            calendarSettings: {
+                serviceId: "AllWeek", 
+                startDate: "20120101",
+                endDate: "20301212",
+                serviceDays: [1,1,1,1,1,1,1]
             }
         };
-
+        
         // initializing gtfs folder 
         fse.initializeEmptyFolder('./gtfs');
+        
+        // Generating an Calendar.txt row
+        let calendar = gtfsCalendarGenerator(generalSettings);
+        let calendarRow = geoJsonObjectToCsv(calendar);
+        fileWriter('./gtfs/calendar.csv', calendarRow);
+        
         // forEach geoJson file in folder do:
-
-        // Generating an Agency.txt row
+        
+        // Generating an Agency.txt row for each geoJson file
         let agency = gtfsAgencyGenerator(input, generalSettings);
         let agencyCsvRow = geoJsonObjectToCsv(agency);
         fileWriter('./gtfs/agency.csv', agencyCsvRow);
         
+        // Generating Stops.txt rows for each geoJson file
+        let agency = gtfsAgencyGenerator(input, generalSettings);
+        let agencyCsvRow = geoJsonObjectToCsv(agency);
+        fileWriter('./gtfs/agency.csv', agencyCsvRow);
+
+
         // make directions using the geoJson coords
         // let directions = await coordsArrayToDirectionsArray(input.features[0].geometry.coordinates);
         // let directions = [
