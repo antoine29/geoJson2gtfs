@@ -5,7 +5,6 @@ exports.initializeEmptyFolder = function (folderName) {
     // if the folder doesn't exists, its created
     try {
         fse.emptyDirSync(folderName);
-        // fse.emptyDirSync('./gtfs');        
         console.log(`${folderName} folder was created`);
     } 
     catch (error) {

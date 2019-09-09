@@ -33,10 +33,8 @@ async function main() {
             }
         };
         
-        // initializing gtfs folder 
         fse.initializeEmptyFolder('./gtfs');
-        // TO DO: after this i should create all the gtfs files (with only the headers)
-        // in order to only append rows after
+        // TO DO: after this i should create all the gtfs files (with only the headers), in order to only append rows after
         
         // Generating an Calendar.txt row
         let calendar = gtfsCalendarGenerator(generalSettings);
