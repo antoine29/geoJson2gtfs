@@ -6,6 +6,8 @@ const geoJsonToStopsFile = require('./geoJsonObjectToCsv/geoJsonToStopsFile');
 const geoJsonObjectToCsv = require('./geoJsonObjectToCsv/geoJsonObjectToCsv');
 const coordsArrayToDirectionsArray = require('./geoJsonFileCompleter/coordsArrayToDirectionsArray');
 
+// fs-extra utils
+const fse = require('./fileHandlers/fs-extraUtils');
 // gtfs generators
 const gtfsAgencyGenerator = require('./gtfsEntitiesGenerators/agencyGenerator/gtfsAgencyGenerator');
 
@@ -26,10 +28,15 @@ async function main() {
             }
         };
 
+        // initializing gtfs folder 
+        fse.initializeEmptyFolder('./gtfs');
+        // forEach geoJson file in folder do:
+
         // Generating an Agency.txt row
-        let agencyRow = gtfsAgencyGenerator();
-
-
+        let agency = gtfsAgencyGenerator(input, generalSettings);
+        let agencyCsvRow = geoJsonObjectToCsv(agency);
+        fileWriter('./gtfs/agency.csv', agencyCsvRow);
+        
         // make directions using the geoJson coords
         // let directions = await coordsArrayToDirectionsArray(input.features[0].geometry.coordinates);
         // let directions = [
