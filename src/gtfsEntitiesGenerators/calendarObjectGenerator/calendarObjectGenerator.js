@@ -88,47 +88,38 @@ exports.calendarObjectGenerator = function(settings) {
         });
     });
 
-    // return {
-    //     fields: gtfsAgencyFileFields(),
-    //     values: [
-    //         {
-    //             serviceId: getCalendarServiceId(settings),
-    //             startDate: getCalendarStartDate(settings),
-    //             endDate: getCalendarEndDate(settings),
-    //             monday: getCalendarServiceDay(settings, 0),
-    //             tuesday: getCalendarServiceDay(settings, 1),
-    //             wednesday: getCalendarServiceDay(settings, 2),
-    //             thursday: getCalendarServiceDay(settings, 3),
-    //             friday: getCalendarServiceDay(settings, 4),
-    //             saturday: getCalendarServiceDay(settings, 5),
-    //             sunday: getCalendarServiceDay(settings, 6),
-    //         }
-    //     ]
-    // };
-
     return {
         fields: gtfsAgencyFileFields(),
         values: calendarValues
     }
 }
 
-exports.calendarObjectFieldsGenerator = function() {
-    return gtfsAgencyFileFields();
+exports.calendarObjectFields = function() {
+    return {
+        fields: gtfsAgencyFileFields(),
+        values: []
+    };
 }
 
-exports.calendarObjectValuesGenerator = function(settings) {
-    return [
-        {
-            serviceId: getCalendarServiceId(settings),
-            startDate: getCalendarStartDate(settings),
-            endDate: getCalendarEndDate(settings),
-            monday: getCalendarServiceDay(settings, 0),
-            tuesday: getCalendarServiceDay(settings, 1),
-            wednesday: getCalendarServiceDay(settings, 2),
-            thursday: getCalendarServiceDay(settings, 3),
-            friday: getCalendarServiceDay(settings, 4),
-            saturday: getCalendarServiceDay(settings, 5),
-            sunday: getCalendarServiceDay(settings, 6),
-        }
-    ];
+exports.calendarObjectValues = function(settings) {
+    let calendarValues = [];
+    settings.calendarSettings.forEach(calendarSetting => {
+        calendarValues.push({
+            serviceId: getCalendarServiceId(calendarSetting),
+            startDate: getCalendarStartDate(calendarSetting),
+            endDate: getCalendarEndDate(calendarSetting),
+            monday: getCalendarServiceDay(calendarSetting, 0),
+            tuesday: getCalendarServiceDay(calendarSetting, 1),
+            wednesday: getCalendarServiceDay(calendarSetting, 2),
+            thursday: getCalendarServiceDay(calendarSetting, 3),
+            friday: getCalendarServiceDay(calendarSetting, 4),
+            saturday: getCalendarServiceDay(calendarSetting, 5),
+            sunday: getCalendarServiceDay(calendarSetting, 6),
+        });
+    });
+
+    return {
+        fields: [],
+        values: calendarValues
+    }
 }

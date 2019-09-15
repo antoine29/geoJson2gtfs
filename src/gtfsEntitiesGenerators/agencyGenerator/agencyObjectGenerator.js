@@ -39,9 +39,30 @@ exports.exportGetAgencyId =  function (geoJsonObject) {
     return getAgencyId(geoJsonObject);
 }
 
-exports.gtfsAgencyGenerator = function (geoJsonObject, settings) {
+exports.agencyObjectGenerator = function (geoJsonObject, settings) {
     return {
         fields: gtfsAgencyFileFields(),
+        values: [
+            {
+                agencyId: getAgencyId(geoJsonObject),
+                agencyName: getAgencyId(geoJsonObject),
+                agencyTimeZone: getAgencyTimeZone(settings),
+                agencyUrl: getAgencyUrl(settings)
+            }
+        ]
+    };
+}
+
+exports.agencyObjectFields = function (geoJsonObject, settings) {
+    return {
+        fields: gtfsAgencyFileFields(),
+        values: []
+    };
+}
+
+exports.agencyObjectValues = function (geoJsonObject, settings) {
+    return {
+        fields: [],
         values: [
             {
                 agencyId: getAgencyId(geoJsonObject),

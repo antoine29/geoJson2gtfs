@@ -1,4 +1,4 @@
-const gtfsAgency = require('../../gtfsEntitiesGenerators/agencyGenerator/gtfsAgencyGenerator');
+const agencyObjectGenerator = require('../agencyGenerator/agencyObjectGenerator');
 
 function getStopsFileFields() {
     return [
@@ -26,7 +26,7 @@ function getDirectionFromCoords(lat, long){
 }
 
 function getStopId(geoJsonObject, i){
-    return ""+gtfsAgency.exportGetAgencyId(geoJsonObject)+i;
+    return ""+agencyObjectGenerator.exportGetAgencyId(geoJsonObject)+i;
 }
 
 function getStopLat(geoJsonObject, i){
