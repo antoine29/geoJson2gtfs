@@ -21,8 +21,8 @@ function gtfsStopsFileFields() {
     ];
 }
 
-function getDirectionFromCoords(lat, long){
-    return "thisIsAnDirection";
+function getDirectionFromCoords(geoJsonObject, index){
+    return geoJsonObject.gtfs.addressNames[index];
 }
 
 function getStopId(geoJsonObject, i){
@@ -49,7 +49,7 @@ exports.stopsObjectGenerator = function(geoJsonObject) {
             stopId: getStopId(geoJsonObject, i),
             lat: lat,
             long: long,
-            streetName: getDirectionFromCoords(lat, long)
+            streetName: getDirectionFromCoords(geoJsonObject, i)
         });
     }
     
@@ -76,7 +76,7 @@ exports.stopsObjectValues = function(geoJsonObject) {
             stopId: getStopId(geoJsonObject, i),
             lat: lat,
             long: long,
-            streetName: getDirectionFromCoords(lat, long)
+            streetName: getDirectionFromCoords(geoJsonObject, i)
         });
     }
     
