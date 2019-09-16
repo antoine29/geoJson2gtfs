@@ -20,12 +20,12 @@ function gtfsAgencyFileFields() {
 }
 
 function getAgencyId(geoJsonFileIndex) {
-    return geoJsonFileIndex + 1;
+    return `A_${geoJsonFileIndex + 1}`;
 }
 
 function getAgencyName(geoJsonObject) {
-    if (geoJsonObject.features[0].properties.agency) return geoJsonObject.features[0].properties.agency;
-    if (geoJsonObject.features[0].properties.agencia) return geoJsonObject.features[0].properties.agencia;
+    if (geoJsonObject.features[0].properties.agency) return `Agency: ${geoJsonObject.features[0].properties.agency}`;
+    if (geoJsonObject.features[0].properties.agencia) return `Agencia: ${geoJsonObject.features[0].properties.agencia}`;
     throw "The geoJson file must have an agency field";
 }
 
