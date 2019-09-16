@@ -11,6 +11,7 @@ const agencyObjectGenerator = require('./gtfsEntitiesGenerators/agencyObjectGene
 const calendarObjectGenerator = require('./gtfsEntitiesGenerators/calendarObjectGenerator');
 const stopsObjectGenerator = require('./gtfsEntitiesGenerators/stopsObjectGenerator');
 const routesObjectGenerator = require('./gtfsEntitiesGenerators/routesObjectGenerator');
+const tripsObjectGenerator = require('./gtfsEntitiesGenerators/tripsObjectGenerator');
 
 function getLocalSettings() {
     // this will be a json file comming as parameter
@@ -46,6 +47,7 @@ async function main(generalSettings) {
     let agencyFileName = 'agency.txt';
     let stopsFileName = 'stops.txt';
     let routesFileName = 'routes.txt';
+    let tripsFileName = 'trips.txt';
     
     // filling the missing addresses in geoJson files
     await geoJsonFilesFiller(geoJsonFilesFolder);
@@ -69,6 +71,10 @@ async function main(generalSettings) {
     let routesObjectFields = routesObjectGenerator.routesObjectFields();
     let gtfsRoutesHeadersRow = geoJsonObjectToCsv(routesObjectFields, true);
     fileWriter(gtfsFolderRoute+routesFileName, gtfsRoutesHeadersRow);
+    // Writing trips.txt file and its headers
+    let tripsObjectFields = tripsObjectGenerator.tripsObjectFields();
+    let gtfsTripsHeadersRow = geoJsonObjectToCsv(tripsObjectFields, true);
+    fileWriter(gtfsFolderRoute+tripsFileName, gtfsTripsHeadersRow);
     
     // Writing the calendar.txt rows
     let calendarObjectValues = calendarObjectGenerator.calendarObjectGenerator(generalSettings);
@@ -94,17 +100,20 @@ async function main(generalSettings) {
             let stop = stopsObjectGenerator.stopsObjectGenerator(geoJsonObjectInput, geoJsonFileIndex);
             let stopCsvRow = geoJsonObjectToCsv(stop, false);
             fileWriter(gtfsFolderRoute+stopsFileName, stopCsvRow);
-            // Writing an routes.txt row for each geoJson file
+            // Writing a routes.txt row for each geoJson file
             let route = routesObjectGenerator.routesObjectGenerator(geoJsonObjectInput, geoJsonFileIndex);
             let routeCsvRow = geoJsonObjectToCsv(route, false);
             fileWriter(gtfsFolderRoute+routesFileName, routeCsvRow);
+            // Writing a trips.txt row for each geoJson file
+            let trip = tripsObjectGenerator.tripsObjectGenerator(geoJsonObjectInput, generalSettings, geoJsonFileIndex);
+            let tripCsvRow = geoJsonObjectToCsv(trip, false);
+            fileWriter(gtfsFolderRoute+tripsFileName, tripCsvRow);
         }
         else {
             console.log(`${geoJsonObjectInput} is an invalid geoJson file !!!`);
         }
     }
 
-    // TO DO: Generating trips.txt row for each geoJson file
     // TO DO: Generating stop_times.txt rows for each geoJson file
     // TO DO: Generating frequencies.txt for each geoJson file
 }

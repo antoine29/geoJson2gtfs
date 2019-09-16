@@ -1,0 +1,60 @@
+function gtfsTripsFileFields() {
+    return [
+        {
+            value: 'tripId',
+            label: 'trip_id'
+        },
+        {
+            value: 'routeId',
+            label: 'route_id'
+        },
+        {
+            value: 'serviceId',
+            label: 'service_id'
+        },
+        {
+            value: 'tripHeadSign',
+            label: 'trip_headsign'
+        }
+    ];
+}
+
+function getTripId(geoJsonFileIndex) {
+    return `T_${geoJsonFileIndex + 1}`;
+}
+
+function getRouteID(geoJsonFileIndex) {
+    return `R_${geoJsonFileIndex}`;
+}
+
+function getServiceId(settings, serviceIndex) {
+    if (settings.calendarSettings[serviceIndex].serviceId) return settings.calendarSettings[serviceIndex].serviceId;
+    throw "The settings file must have a valid serviceId field";
+}
+
+function getTripHeadSign(geoJsonObject) {
+    if (geoJsonObject.features[0].properties.agency) return `${geoJsonObject.features[0].properties.agency}`;
+    if (geoJsonObject.features[0].properties.agencia) return `${geoJsonObject.features[0].properties.agencia}`;
+    throw "The geoJson file must have an agency field";
+}
+
+exports.tripsObjectGenerator = function(geoJsonObject, settings, geoJsonFileIndex) {
+    return {
+        fields: gtfsTripsFileFields(),
+        values: [
+            {
+                tripId: getTripId(geoJsonFileIndex),
+                routeId: getRouteID(geoJsonFileIndex),
+                serviceId: getServiceId(settings, 0),
+                tripHeadSign: getTripHeadSign(geoJsonObject)
+            }
+        ]
+    };
+}
+
+exports.tripsObjectFields = function() {
+    return {
+        fields: gtfsTripsFileFields(),
+        values: []
+    };
+}
