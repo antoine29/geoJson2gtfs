@@ -1,7 +1,6 @@
 const nodeGeocoderClient = require('./reverseGeoCodeClient/node-geocoder-client');
 const geoCodeXyzClient = require('./reverseGeoCodeClient/geocodexyz-client');
 const objectFieldsFilter = require('../geoJsonObjectUtils/objectFieldsFilter');
-// const objectFieldsFilter = require('../../../json2csvPoC/objectFieldsFilter');
 
 let lastValidDirection = "";
 

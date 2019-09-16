@@ -93,22 +93,11 @@ async function main(generalSettings) {
             console.log(`${geoJsonObjectInput} is an invalid geoJson file !!!`);
         }
     }
-    
-    
-    // if (geoJsonObjectValidator(input)) {
-        // // Generating stops.txt rows for each geoJson file
-        // let stops = gtfsStopsObjectGenerator(input);
-        // let stopsRows = geoJsonObjectToCsv(stops);
-        // fileWriter('./gtfs/stops.csv', stopsRows);
 
-        // // TO DO: Generating stop_times.txt rows for each geoJson file
-        // // TO DO: Generating routes.txt row for each geoJson file
-        // // TO DO: Generating trips.txt row for each geoJson file
-        // // TO DO: Generating frequencies.txt for each geoJson file
-    // }
-    // else {
-    //     console.log("invalid geoJson file !!!");
-    // }
+    // // TO DO: Generating stop_times.txt rows for each geoJson file
+    // // TO DO: Generating routes.txt row for each geoJson file
+    // // TO DO: Generating trips.txt row for each geoJson file
+    // // TO DO: Generating frequencies.txt for each geoJson file
 }
 
 main(getLocalSettings());
