@@ -1,6 +1,6 @@
 const agencyObjectGenerator = require('../agencyGenerator/agencyObjectGenerator');
 
-function getStopsFileFields() {
+function gtfsStopsFileFields() {
     return [
         {
             value: 'stopId',
@@ -39,7 +39,7 @@ function getStopLong(geoJsonObject, i){
     return coordinate[1];
 }
 
-module.exports = function gtfsStopsObjectGenerator(geoJsonObject) {
+exports.stopsObjectGenerator = function(geoJsonObject) {
     let stops = [];
     let lat, long;
     for (let i=0; i<geoJsonObject.features[0].geometry.coordinates.length; i++) {
@@ -54,7 +54,34 @@ module.exports = function gtfsStopsObjectGenerator(geoJsonObject) {
     }
     
     return {
-        fields: getStopsFileFields(),
+        fields: gtfsStopsFileFields(),
+        values: stops
+    };
+};
+
+exports.stopsObjectFields = function() {
+    return {
+        fields: gtfsStopsFileFields(),
+        values: []
+    };
+};
+
+exports.stopsObjectValues = function(geoJsonObject) {
+    let stops = [];
+    let lat, long;
+    for (let i=0; i<geoJsonObject.features[0].geometry.coordinates.length; i++) {
+        lat = getStopLat(geoJsonObject, i);
+        long = getStopLong(geoJsonObject, i);
+        stops.push({
+            stopId: getStopId(geoJsonObject, i),
+            lat: lat,
+            long: long,
+            streetName: getDirectionFromCoords(lat, long)
+        });
+    }
+    
+    return {
+        fields: [],
         values: stops
     };
 };

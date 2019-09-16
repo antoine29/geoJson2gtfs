@@ -35,11 +35,11 @@ function getAgencyUrl(settings) {
     throw "The settings file must have a agencySettings.agencyUrl field";
 }
 
-exports.exportGetAgencyId =  function (geoJsonObject) {
+exports.exportGetAgencyId = function(geoJsonObject) {
     return getAgencyId(geoJsonObject);
 }
 
-exports.agencyObjectGenerator = function (geoJsonObject, settings) {
+exports.agencyObjectGenerator = function(geoJsonObject, settings) {
     return {
         fields: gtfsAgencyFileFields(),
         values: [
@@ -53,14 +53,14 @@ exports.agencyObjectGenerator = function (geoJsonObject, settings) {
     };
 }
 
-exports.agencyObjectFields = function (geoJsonObject, settings) {
+exports.agencyObjectFields = function(geoJsonObject, settings) {
     return {
         fields: gtfsAgencyFileFields(),
         values: []
     };
 }
 
-exports.agencyObjectValues = function (geoJsonObject, settings) {
+exports.agencyObjectValues = function(geoJsonObject, settings) {
     return {
         fields: [],
         values: [
