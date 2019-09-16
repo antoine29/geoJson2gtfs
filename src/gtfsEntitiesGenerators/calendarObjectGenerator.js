@@ -100,26 +100,3 @@ exports.calendarObjectFields = function() {
         values: []
     };
 }
-
-exports.calendarObjectValues = function(settings) {
-    let calendarValues = [];
-    settings.calendarSettings.forEach(calendarSetting => {
-        calendarValues.push({
-            serviceId: getCalendarServiceId(calendarSetting),
-            startDate: getCalendarStartDate(calendarSetting),
-            endDate: getCalendarEndDate(calendarSetting),
-            monday: getCalendarServiceDay(calendarSetting, 0),
-            tuesday: getCalendarServiceDay(calendarSetting, 1),
-            wednesday: getCalendarServiceDay(calendarSetting, 2),
-            thursday: getCalendarServiceDay(calendarSetting, 3),
-            friday: getCalendarServiceDay(calendarSetting, 4),
-            saturday: getCalendarServiceDay(calendarSetting, 5),
-            sunday: getCalendarServiceDay(calendarSetting, 6),
-        });
-    });
-
-    return {
-        fields: [],
-        values: calendarValues
-    }
-}

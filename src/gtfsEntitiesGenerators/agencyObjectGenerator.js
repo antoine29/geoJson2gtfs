@@ -19,7 +19,11 @@ function gtfsAgencyFileFields() {
     ];
 }
 
-function getAgencyId(geoJsonObject) {
+function getAgencyId(geoJsonFileIndex) {
+    return geoJsonFileIndex + 1;
+}
+
+function getAgencyName(geoJsonObject) {
     if (geoJsonObject.features[0].properties.agency) return geoJsonObject.features[0].properties.agency;
     if (geoJsonObject.features[0].properties.agencia) return geoJsonObject.features[0].properties.agencia;
     throw "The geoJson file must have an agency field";
@@ -35,17 +39,17 @@ function getAgencyUrl(settings) {
     throw "The settings file must have a agencySettings.agencyUrl field";
 }
 
-exports.exportGetAgencyId = function(geoJsonObject) {
-    return getAgencyId(geoJsonObject);
+exports.exportGetAgencyId = function(geoJsonFileIndex) {
+    return getAgencyId(geoJsonFileIndex);
 }
 
-exports.agencyObjectGenerator = function(geoJsonObject, settings) {
+exports.agencyObjectGenerator = function(geoJsonObject, settings, geoJsonFileIndex) {
     return {
         fields: gtfsAgencyFileFields(),
         values: [
             {
-                agencyId: getAgencyId(geoJsonObject),
-                agencyName: getAgencyId(geoJsonObject),
+                agencyId: getAgencyId(geoJsonFileIndex),
+                agencyName: getAgencyName(geoJsonObject),
                 agencyTimeZone: getAgencyTimeZone(settings),
                 agencyUrl: getAgencyUrl(settings)
             }
@@ -53,23 +57,9 @@ exports.agencyObjectGenerator = function(geoJsonObject, settings) {
     };
 }
 
-exports.agencyObjectFields = function(geoJsonObject, settings) {
+exports.agencyObjectFields = function() {
     return {
         fields: gtfsAgencyFileFields(),
         values: []
-    };
-}
-
-exports.agencyObjectValues = function(geoJsonObject, settings) {
-    return {
-        fields: [],
-        values: [
-            {
-                agencyId: getAgencyId(geoJsonObject),
-                agencyName: getAgencyId(geoJsonObject),
-                agencyTimeZone: getAgencyTimeZone(settings),
-                agencyUrl: getAgencyUrl(settings)
-            }
-        ]
     };
 }

@@ -20,13 +20,13 @@ function getLocalSettings() {
         },
         calendarSettings: [
             {
-                serviceId: "AllWeek", 
+                serviceId: "mon-sun", 
                 startDate: "20120101",
                 endDate: "20301212",
                 serviceDays: [1,1,1,1,1,1,1]
             },
             {
-                serviceId: "laborDays", 
+                serviceId: "mon-fri", 
                 startDate: "20120101",
                 endDate: "20301212",
                 serviceDays: [1,1,1,1,1,0,0]
@@ -72,20 +72,20 @@ async function main(generalSettings) {
     // Getting all geojson files in directory
     let geoJsonFiles = filesSearcher(geoJsonFilesFolder);
 
-    for (let fileIndex = 0; fileIndex < geoJsonFiles.length; fileIndex++) {
+    for (let geoJsonFileIndex = 0; geoJsonFileIndex < geoJsonFiles.length; geoJsonFileIndex++) {
         
-        let geoJsonFilePath = geoJsonFiles[fileIndex];
+        let geoJsonFilePath = geoJsonFiles[geoJsonFileIndex];
         
         const geoJsonObjectInput = typeof geoJsonFilePath === "string" ?
             geoJsonFileUtils.geoJsonFileReader(geoJsonFilePath) : geoJsonFilePath;
 
         if (geoJsonObjectValidator(geoJsonObjectInput)) {
             // Writing an agency.txt row for each geoJson file
-            let agency = agencyObjectGenerator.agencyObjectGenerator(geoJsonObjectInput, generalSettings);
+            let agency = agencyObjectGenerator.agencyObjectGenerator(geoJsonObjectInput, generalSettings, geoJsonFileIndex);
             let agencyCsvRow = geoJsonObjectToCsv(agency, false);
             fileWriter(gtfsFolderRoute+agencyFileName, agencyCsvRow);
-            // Writing an stop.txt row for each geoJson file
-            let stop = stopsObjectGenerator.stopsObjectGenerator(geoJsonObjectInput);
+            // Writing stop.txt rows for each geoJson file
+            let stop = stopsObjectGenerator.stopsObjectGenerator(geoJsonObjectInput, geoJsonFileIndex);
             let stopCsvRow = geoJsonObjectToCsv(stop, false);
             fileWriter(gtfsFolderRoute+stopsFileName, stopCsvRow);
         }
@@ -94,10 +94,10 @@ async function main(generalSettings) {
         }
     }
 
-    // // TO DO: Generating stop_times.txt rows for each geoJson file
-    // // TO DO: Generating routes.txt row for each geoJson file
-    // // TO DO: Generating trips.txt row for each geoJson file
-    // // TO DO: Generating frequencies.txt for each geoJson file
+    // TO DO: Generating routes.txt row for each geoJson file
+    // TO DO: Generating trips.txt row for each geoJson file
+    // TO DO: Generating stop_times.txt rows for each geoJson file
+    // TO DO: Generating frequencies.txt for each geoJson file
 }
 
 main(getLocalSettings());
