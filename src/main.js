@@ -82,9 +82,12 @@ async function main(generalSettings) {
         if (geoJsonObjectValidator(geoJsonObjectInput)) {
             // Writing an agency.txt row for each geoJson file
             let agency = agencyObjectGenerator.agencyObjectGenerator(geoJsonObjectInput, generalSettings);
-            let agencyCsvRow = geoJsonObjectToCsv(agency);
+            let agencyCsvRow = geoJsonObjectToCsv(agency, false);
             fileWriter(gtfsFolderRoute+agencyFileName, agencyCsvRow);
-
+            // Writing an stop.txt row for each geoJson file
+            let stop = stopsObjectGenerator.stopsObjectGenerator(geoJsonObjectInput);
+            let stopCsvRow = geoJsonObjectToCsv(stop, false);
+            fileWriter(gtfsFolderRoute+stopsFileName, stopCsvRow);
         }
         else {
             console.log(`${geoJsonObjectInput} is an invalid geoJson file !!!`);
