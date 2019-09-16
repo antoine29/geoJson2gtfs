@@ -1,6 +1,6 @@
 const fse = require('fs-extra');
 
-exports.initializeEmptyFolder = function (folderName) {
+exports.initializeEmptyFolder = function(folderName) {
     // empties the folder, dont delete the folder itself just the content 
     // if the folder doesn't exists, its created
     try {
@@ -13,6 +13,6 @@ exports.initializeEmptyFolder = function (folderName) {
     }
 }
 
-exports.fileExists = function (path) {
+exports.fileExists = function(path) {
     return true;
 }

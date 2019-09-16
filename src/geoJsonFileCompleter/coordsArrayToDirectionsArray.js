@@ -9,12 +9,12 @@ function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function getDirection(obj, fields) {
-    let receivedDirections = objectFieldsFilter(obj, fields);
-    if (receivedDirections.length === 0 ) return lastValidDirection+"*";
-    if (receivedDirections[0] === undefined) return lastValidDirection+"*";
-    lastValidDirection = receivedDirections[0];
-    return receivedDirections[0];
+function getAddressFromResponse(obj, fields) {
+    let receivedAddresses = objectFieldsFilter(obj, fields);
+    if (receivedAddresses.length === 0 ) return lastValidDirection+"*";
+    if (receivedAddresses[0] === undefined) return lastValidDirection+"*";
+    lastValidDirection = receivedAddresses[0];
+    return receivedAddresses[0];
 }
 
 module.exports = async function coordsArrayToDirectionsArray(coords) {
@@ -25,9 +25,7 @@ module.exports = async function coordsArrayToDirectionsArray(coords) {
     let coord, lati, long;
     let response;
 
-    console.log(`starting to process ${coords.length} coords`);
-
-    for (let index=0; index<5; index++) {
+    for (let index=0; index<coords.length; index++) {
 
         coord = coords[index];
         long = coord[0];
@@ -35,7 +33,7 @@ module.exports = async function coordsArrayToDirectionsArray(coords) {
 
         response = await geoCodeXyzClient(lati, long);
         // response = await nodeGeocoderClient(lati, long);
-        direction = getDirection(
+        direction = getAddressFromResponse(
             response, 
             [
                 'addr-street', 'staddress', // geocode.xyz endpoint fields

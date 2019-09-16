@@ -1,11 +1,12 @@
-const geoJsonFileReader = require('./fileHandlers/geoJsonFileReader');
-const geoJsonFileWriter = require('./fileHandlers/geoJsonFileWriter');
+const geoJsonFileUtils = require('./fileHandlers/geoJsonFileUtils');
 const fileWriter = require('./fileHandlers/fileWriter');
 const geoJsonObjectValidator = require('./geoJsonObjectUtils/geoJsonObjectValidator');
 const geoJsonObjectToCsv = require('./geoJsonObjectToCsv/geoJsonObjectToCsv');
 const coordsArrayToDirectionsArray = require('./geoJsonFileCompleter/coordsArrayToDirectionsArray');
 const fse = require('./fileHandlers/fs-extraUtils');
 const filesSearcher = require('./fileHandlers/filesSearcher');
+
+const geoJsonFilesFiller = require('./geoJsonFileCompleter/geoJsonFilesFiller');
 
 const agencyObjectGenerator = require('./gtfsEntitiesGenerators/agencyGenerator/agencyObjectGenerator');
 const calendarObjectGenerator = require('./gtfsEntitiesGenerators/calendarObjectGenerator/calendarObjectGenerator');
@@ -38,11 +39,15 @@ function getLocalSettings() {
 }
 
 async function main(generalSettings) {
-    
+
+    let geoJsonFilesFolder = './geoJsonFiles/*.geojson' ;
     let gtfsFolderRoute = './gtfs/';
     let calendarFileName = 'calendar.txt';
     let agencyFileName = 'agency.txt';
     
+    // filling the missing addresses in geoJson files
+    await geoJsonFilesFiller(geoJsonFilesFolder);
+
     fse.initializeEmptyFolder(gtfsFolderRoute);
 
     // These rows only have to be writen once time at the begining of the program
@@ -55,61 +60,35 @@ async function main(generalSettings) {
     let gtfsAgencyHeadersRow = geoJsonObjectToCsv(agencyObjectFields, true);
     fileWriter(gtfsFolderRoute+agencyFileName, gtfsAgencyHeadersRow);
     
-    // Generating the calendar.txt rows
+    // Writing the calendar.txt rows
     let calendarObjectValues = calendarObjectGenerator.calendarObjectGenerator(generalSettings);
     let gtfsCalendarRows = geoJsonObjectToCsv(calendarObjectValues, false);
     fileWriter(gtfsFolderRoute+calendarFileName, gtfsCalendarRows);
     
     // Getting all geojson files in directory
-    let geoJsonFolder = './geoJsonFiles/*.geojson' ;
-    let geoJsonFiles = filesSearcher(geoJsonFolder);
+    let geoJsonFiles = filesSearcher(geoJsonFilesFolder);
 
     for (let fileIndex = 0; fileIndex < geoJsonFiles.length; fileIndex++) {
         
-        let geoJsonFileName = geoJsonFiles[fileIndex];
+        let geoJsonFilePath = geoJsonFiles[fileIndex];
         
-        const input = typeof geoJsonFileName === "string" ?
-            geoJsonFileReader(geoJsonFileName) : geoJsonFileName;
+        const geoJsonObjectInput = typeof geoJsonFilePath === "string" ?
+            geoJsonFileUtils.geoJsonFileReader(geoJsonFilePath) : geoJsonFilePath;
 
-        if (geoJsonObjectValidator(input)) {
-            // Generating an agency.txt row for each geoJson file
-            let agency = agencyObjectGenerator.agencyObjectGenerator(input, generalSettings);
+        if (geoJsonObjectValidator(geoJsonObjectInput)) {
+            // Writing an agency.txt row for each geoJson file
+            let agency = agencyObjectGenerator.agencyObjectGenerator(geoJsonObjectInput, generalSettings);
             let agencyCsvRow = geoJsonObjectToCsv(agency);
             fileWriter(gtfsFolderRoute+agencyFileName, agencyCsvRow);
 
+        }
+        else {
+            console.log(`${geoJsonObjectInput} is an invalid geoJson file !!!`);
         }
     }
     
     
     // if (geoJsonObjectValidator(input)) {
-        
-        // Generating an agency.txt row for each geoJson file
-        // let agency = agencyObjectGenerator.agencyObjectGenerator(input, generalSettings);
-        // let agencyCsvRow = geoJsonObjectToCsv(agency);
-        // fileWriter('./gtfs/agency.csv', agencyCsvRow);
-
-        // // TO DO:: generate directions array in the geoJson object/file
-        // // make directions using the geoJson coords
-        // // let directions = await coordsArrayToDirectionsArray(input.features[0].geometry.coordinates);
-        // // let directions = [
-        // //     "a1",
-        // //     "a2",
-        // //     "a3",
-        // //     "a4",
-        // //     "a5"
-        // // ];
-        
-        // // let gtfsFields = {
-        // //     directions: directions
-        // // };
-        
-        // // adding the custom field in the original geoJson object
-        // // input.gtfs = gtfsFields;
-        
-        // // writing (updating) the geoJson file
-        // // geoJsonFileWriter(input, geoJsonFileName);
-        
-        
         // // Generating stops.txt rows for each geoJson file
         // let stops = gtfsStopsObjectGenerator(input);
         // let stopsRows = geoJsonObjectToCsv(stops);
