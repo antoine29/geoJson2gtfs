@@ -1,4 +1,4 @@
-const agencyObjectGenerator = require('../agencyGenerator/agencyObjectGenerator');
+const agencyObjectGenerator = require('./agencyObjectGenerator');
 
 function gtfsStopsFileFields() {
     return [

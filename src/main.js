@@ -7,9 +7,9 @@ const filesSearcher = require('./fileHandlers/filesSearcher');
 
 const geoJsonFilesFiller = require('./geoJsonFileCompleter/geoJsonFilesFiller');
 
-const agencyObjectGenerator = require('./gtfsEntitiesGenerators/agencyGenerator/agencyObjectGenerator');
-const calendarObjectGenerator = require('./gtfsEntitiesGenerators/calendarObjectGenerator/calendarObjectGenerator');
-const stopsObjectGenerator = require('./gtfsEntitiesGenerators/stopsObjectGenerator/stopsObjectGenerator');
+const agencyObjectGenerator = require('./gtfsEntitiesGenerators/agencyObjectGenerator');
+const calendarObjectGenerator = require('./gtfsEntitiesGenerators/calendarObjectGenerator');
+const stopsObjectGenerator = require('./gtfsEntitiesGenerators/stopsObjectGenerator');
 
 function getLocalSettings() {
     // this will be a json file comming as parameter
