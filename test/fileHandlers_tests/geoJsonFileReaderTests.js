@@ -2,11 +2,11 @@
 
 const expect = require('chai').expect;
 const assert = require('chai').assert;
-const geoJsonFileReader = require('../../src/fileHandlers/geoJsonFileReader');
+const geoJsonFileUtils = require('../../src/fileHandlers/geoJsonFileUtils');
 
 describe('fileHandlers tests:', () => {
     it('A geoJson file should be readed into an js object', () => {
-        const geoJsonObject = geoJsonFileReader('./test/fileHandlers_tests/geoJsonTestFile.geojson');
+        const geoJsonObject = geoJsonFileUtils.geoJsonFileReader('./test/fileHandlers_tests/geoJsonTestFile.geojson');
         expect(geoJsonObject).to.be.an('Object')
     });
 
