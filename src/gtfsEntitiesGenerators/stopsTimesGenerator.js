@@ -37,7 +37,7 @@ exports.stopTimesObjectGenerator = function(trip, stops) {
     stopTimes.push({
         tripId: trip.tripId,
         stopId: stops[0].stopId,
-        stopSequence: i,
+        stopSequence: 1,
         departureTime: '00:00:00',
         arrivalTime: '00:00:00',
         shapeDistTraveled: null,
@@ -59,7 +59,7 @@ exports.stopTimesObjectGenerator = function(trip, stops) {
     stopTimes.push({
         tripId: trip.tripId,
         stopId: stops[stops.length-1].stopId,
-        stopSequence: i,
+        stopSequence: stops.length,
         departureTime: '01:00:00',
         arrivalTime: '01:00:00',
         shapeDistTraveled: null,
