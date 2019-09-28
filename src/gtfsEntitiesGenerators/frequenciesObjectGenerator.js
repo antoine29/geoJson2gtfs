@@ -29,16 +29,16 @@ exports.frequenciesObjectGenerator = function(trip, settings) {
         values: [
             {
                 tripId: trip.tripId,
-                startTime: settings[0].startTime,
-                endTime: settings[0].endTime,
-                exactTimes: settings[0].exactTimes,
-                headwaySecs: settings[0].headwaySecs
+                startTime: settings.frequencies[0].startTime,
+                endTime: settings.frequencies[0].endTime,
+                exactTimes: settings.frequencies[0].exactTimes,
+                headwaySecs: settings.frequencies[0].headwaySecs
             }
         ]
     };
 }
 
-exports.frequenciesObjectFields = function(settings) {
+exports.frequenciesObjectFields = function() {
     return {
         fields: gtfsFrequenciesFileFields(),
         values: []

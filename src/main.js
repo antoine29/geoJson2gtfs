@@ -92,7 +92,7 @@ async function main(generalSettings) {
     let gtfsStopTimesHeadersRow = geoJsonObjectToCsv(stopTimesObjectFields, true);
     fileWriter(gtfsFolderRoute+stopTimesFileName, gtfsStopTimesHeadersRow);
     // Writing frequencies.txt file and its headers
-    let frequenciesObjectFields = frequenciesObjectGenerator.frequenciesObjectGenerator();
+    let frequenciesObjectFields = frequenciesObjectGenerator.frequenciesObjectFields();
     let frequenciesHeadersRow = geoJsonObjectToCsv(frequenciesObjectFields, true);
     fileWriter(gtfsFolderRoute+frequenciesFileName, frequenciesHeadersRow);
     
