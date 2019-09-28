@@ -143,5 +143,3 @@ async function main(settings) {
         }
     }
 }
-
-main(getLocalSettings());
