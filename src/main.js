@@ -52,7 +52,7 @@ function getLocalSettings() {
 async function main(generalSettings) {
 
     let geoJsonFilesFolder = './geoJsonFiles' ;
-    let gtfsFolderRoute = './gtfs';
+    let gtfsFolderRoute = './gtfs/';
     let calendarFileName = 'calendar.txt';
     let agencyFileName = 'agency.txt';
     let stopsFileName = 'stops.txt';
