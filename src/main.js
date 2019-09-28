@@ -1,5 +1,5 @@
 const geoJsonFileUtils = require('./fileHandlers/geoJsonFileUtils');
-const fileWriter = require('./fileHandlers/fileWriter');
+const streamFileWriter = require('./fileHandlers/streamFileWriter');
 const geoJsonObjectValidator = require('./geoJsonObjectUtils/geoJsonObjectValidator');
 const geoJsonObjectToCsv = require('./geoJsonObjectToCsv/geoJsonObjectToCsv');
 const fse = require('./fileHandlers/fs-extraUtils');
@@ -71,36 +71,36 @@ async function main(generalSettings) {
     // Writing calendar.txt file and its headers
     let calendarObjectFields = calendarObjectGenerator.calendarObjectFields();
     let gtfsCalendarHeadersRow = geoJsonObjectToCsv(calendarObjectFields, true);
-    fileWriter(gtfsFolderRoute+calendarFileName, gtfsCalendarHeadersRow);
+    streamFileWriter(gtfsFolderRoute+calendarFileName, gtfsCalendarHeadersRow);
     // Writing agency.txt file and its headers
     let agencyObjectFields = agencyObjectGenerator.agencyObjectFields();
     let gtfsAgencyHeadersRow = geoJsonObjectToCsv(agencyObjectFields, true);
-    fileWriter(gtfsFolderRoute+agencyFileName, gtfsAgencyHeadersRow);
+    streamFileWriter(gtfsFolderRoute+agencyFileName, gtfsAgencyHeadersRow);
     // Writing stops.txt file and its headers
     let stopsObjectFields = stopsObjectGenerator.stopsObjectFields();
     let gtfsStopsHeadersRow = geoJsonObjectToCsv(stopsObjectFields, true);
-    fileWriter(gtfsFolderRoute+stopsFileName, gtfsStopsHeadersRow);
+    streamFileWriter(gtfsFolderRoute+stopsFileName, gtfsStopsHeadersRow);
     // Writing routes.txt file and its headers
     let routesObjectFields = routesObjectGenerator.routesObjectFields();
     let gtfsRoutesHeadersRow = geoJsonObjectToCsv(routesObjectFields, true);
-    fileWriter(gtfsFolderRoute+routesFileName, gtfsRoutesHeadersRow);
+    streamFileWriter(gtfsFolderRoute+routesFileName, gtfsRoutesHeadersRow);
     // Writing trips.txt file and its headers
     let tripsObjectFields = tripsObjectGenerator.tripsObjectFields();
     let gtfsTripsHeadersRow = geoJsonObjectToCsv(tripsObjectFields, true);
-    fileWriter(gtfsFolderRoute+tripsFileName, gtfsTripsHeadersRow);
+    streamFileWriter(gtfsFolderRoute+tripsFileName, gtfsTripsHeadersRow);
     // Writing stop_times.txt file and its headers
     let stopTimesObjectFields = stopTimesObjectGenerator.stopTimesObjectFields();
     let gtfsStopTimesHeadersRow = geoJsonObjectToCsv(stopTimesObjectFields, true);
-    fileWriter(gtfsFolderRoute+stopTimesFileName, gtfsStopTimesHeadersRow);
+    streamFileWriter(gtfsFolderRoute+stopTimesFileName, gtfsStopTimesHeadersRow);
     // Writing frequencies.txt file and its headers
     let frequenciesObjectFields = frequenciesObjectGenerator.frequenciesObjectFields();
     let frequenciesHeadersRow = geoJsonObjectToCsv(frequenciesObjectFields, true);
-    fileWriter(gtfsFolderRoute+frequenciesFileName, frequenciesHeadersRow);
+    streamFileWriter(gtfsFolderRoute+frequenciesFileName, frequenciesHeadersRow);
     
     // Writing the calendar.txt rows
     let calendarObjectValues = calendarObjectGenerator.calendarObjectGenerator(generalSettings);
     let gtfsCalendarRows = geoJsonObjectToCsv(calendarObjectValues, false);
-    fileWriter(gtfsFolderRoute+calendarFileName, gtfsCalendarRows);
+    streamFileWriter(gtfsFolderRoute+calendarFileName, gtfsCalendarRows);
     
     // Getting all geojson files in directory
     let geoJsonFiles = filesSearcher(geoJsonFilesFolder, 'geojson');
@@ -116,27 +116,27 @@ async function main(generalSettings) {
             // Writing an agency.txt row for each geoJson file
             let agency = agencyObjectGenerator.agencyObjectGenerator(geoJsonObjectInput, generalSettings, geoJsonFileIndex);
             let agencyCsvRow = geoJsonObjectToCsv(agency, false);
-            fileWriter(gtfsFolderRoute+agencyFileName, agencyCsvRow);
+            streamFileWriter(gtfsFolderRoute+agencyFileName, agencyCsvRow);
             // Writing stop.txt rows for each geoJson file
             let stops = stopsObjectGenerator.stopsObjectGenerator(geoJsonObjectInput, geoJsonFileIndex);
             let stopCsvRows = geoJsonObjectToCsv(stops, false);
-            fileWriter(gtfsFolderRoute+stopsFileName, stopCsvRows);
+            streamFileWriter(gtfsFolderRoute+stopsFileName, stopCsvRows);
             // Writing a routes.txt row for each geoJson file
             let route = routesObjectGenerator.routesObjectGenerator(geoJsonObjectInput, geoJsonFileIndex);
             let routeCsvRow = geoJsonObjectToCsv(route, false);
-            fileWriter(gtfsFolderRoute+routesFileName, routeCsvRow);
+            streamFileWriter(gtfsFolderRoute+routesFileName, routeCsvRow);
             // Writing a trips.txt row for each geoJson file
             let trip = tripsObjectGenerator.tripsObjectGenerator(geoJsonObjectInput, generalSettings, geoJsonFileIndex);
             let tripCsvRow = geoJsonObjectToCsv(trip, false);
-            fileWriter(gtfsFolderRoute+tripsFileName, tripCsvRow);
+            streamFileWriter(gtfsFolderRoute+tripsFileName, tripCsvRow);
             // Writing stop_times.txt rows for each geoJson file
             let stopTimes = stopTimesObjectGenerator.stopTimesObjectGenerator(trip.values[0], stops.values);
             let stopTimesCsvRows = geoJsonObjectToCsv(stopTimes, false);
-            fileWriter(gtfsFolderRoute+stopTimesFileName, stopTimesCsvRows);
+            streamFileWriter(gtfsFolderRoute+stopTimesFileName, stopTimesCsvRows);
             // Writing a frequencies.txt row for each geoJson file
             let frequencie = frequenciesObjectGenerator.frequenciesObjectGenerator(trip.values[0], generalSettings);
             let frequencieCsvRow = geoJsonObjectToCsv(frequencie, false);
-            fileWriter(gtfsFolderRoute+frequenciesFileName, frequencieCsvRow);
+            streamFileWriter(gtfsFolderRoute+frequenciesFileName, frequencieCsvRow);
         }
         else {
             console.log(`${geoJsonObjectInput} is an invalid geoJson file !!!`);

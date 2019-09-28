@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-module.exports = function fileWriter(fileName, file) {
+module.exports = function streamFileWriter(fileName, file) {
     fileName = './' + fileName;
     
     let writeStream = fs.createWriteStream(
