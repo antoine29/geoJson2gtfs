@@ -33,7 +33,18 @@ function gtfsStopTimesFileFields() {
 
 exports.stopTimesObjectGenerator = function(trip, stops) {
     let stopTimes = [];
-    for (let i=0; i<stops.length; i++) {
+
+    stopTimes.push({
+        tripId: trip.tripId,
+        stopId: stops[0].stopId,
+        stopSequence: i,
+        departureTime: '00:00:00',
+        arrivalTime: '00:00:00',
+        shapeDistTraveled: null,
+        timepoit: null
+    });
+
+    for (let i=1; i<stops.length-1; i++) {
         stopTimes.push({
             tripId: trip.tripId,
             stopId: stops[i].stopId,
@@ -44,6 +55,16 @@ exports.stopTimesObjectGenerator = function(trip, stops) {
             timepoit: null
         });
     }
+
+    stopTimes.push({
+        tripId: trip.tripId,
+        stopId: stops[stops.length-1].stopId,
+        stopSequence: i,
+        departureTime: '01:00:00',
+        arrivalTime: '01:00:00',
+        shapeDistTraveled: null,
+        timepoit: null
+    });
     
     return {
         fields: gtfsStopTimesFileFields(),

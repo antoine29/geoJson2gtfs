@@ -124,7 +124,6 @@ async function main(generalSettings) {
         }
     }
 
-    // TO DO: Generating stop_times.txt rows for each geoJson file
     // TO DO: Generating frequencies.txt for each geoJson file
 }
 
