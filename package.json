@@ -2,7 +2,7 @@
   "name": "geojson2gtfs",
   "version": "1.0.0",
   "description": "A tiny nodeJs cli app to transform geoJson files (describing an onDemand informal public transport routes) to its corresponding GTFS entities.",
-  "main": "index.js",
+  "main": "bin/index.js",
   "scripts": {
     "test": "mocha --recursive"
   },
@@ -21,6 +21,9 @@
   ],
   "author": "Anthony Flores Gomez",
   "license": "ISC",
+  "bin": {
+    "hello": "./bin/index.js"
+  },
   "bugs": {
     "url": "https://github.com/antoine29/geoJson2GTFS/issues"
   },
@@ -35,6 +38,7 @@
     "find-key": "^2.1.3",
     "fs-extra": "^8.1.0",
     "json2csv": "^4.5.2",
-    "node-geocoder": "^3.24.0"
+    "node-geocoder": "^3.24.0",
+    "yargs": "^14.0.0"
   }
 }
