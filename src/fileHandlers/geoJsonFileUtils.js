@@ -5,7 +5,7 @@ exports.geoJsonFileReader = function(path) {
         return JSON.parse(fs.readFileSync(path));
     }
     catch (error) {
-        throw new Error(`Could not read input file: ${error.message}`);
+        throw new Error(`Could not read input file: ${path} \n ${error.message}`);
     }
 };
 
@@ -15,7 +15,6 @@ exports.geoJsonFileWriter = function(geoJsonObject, path) {
         fs.writeFileSync(path, jsonString);
     }
     catch (error) {
-        throw new Error(`Could not write in file: ${error.message}`);
+        throw new Error(`Could not write in file: ${path} \n ${error.message}`);
     }
 };
-
