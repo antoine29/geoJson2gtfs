@@ -51,7 +51,6 @@ function getLocalSettings() {
 
 async function main(generalSettings) {
 
-    // let geoJsonFilesFolder = './geoJsonFiles/*.geojson' ;
     let geoJsonFilesFolder = './geoJsonFiles/' ;
     let gtfsFolderRoute = './gtfs/';
     let calendarFileName = 'calendar.txt';

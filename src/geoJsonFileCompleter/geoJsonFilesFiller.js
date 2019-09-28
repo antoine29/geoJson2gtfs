@@ -18,7 +18,7 @@ module.exports = async function geoJsonFilesFiller(geoJsonFilesFolder) {
 
             // ToDo:
             // what if I have more than one geoLine?
-            // it should be validated for not more than on geoLine or
+            // it should be validated for not more than one geoLine or
             // we should handle all the lines
             console.log(`Getting addresses from file ${geoJsonFilePath}`);
             let addresses = await coordsArrayToDirectionsArray(geoJsonObjectInput.features[0].geometry.coordinates);
