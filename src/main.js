@@ -13,6 +13,7 @@ const stopsObjectGenerator = require('./gtfsEntitiesGenerators/stopsObjectGenera
 const routesObjectGenerator = require('./gtfsEntitiesGenerators/routesObjectGenerator');
 const tripsObjectGenerator = require('./gtfsEntitiesGenerators/tripsObjectGenerator');
 const stopTimesObjectGenerator = require('./gtfsEntitiesGenerators/stopsTimesGenerator');
+const frequenciesObjectGenerator = require('./gtfsEntitiesGenerators/frequenciesObjectGenerator');
 
 function getLocalSettings() {
     // this will be a json file comming as parameter
@@ -34,6 +35,14 @@ function getLocalSettings() {
                 endDate: "20301212",
                 serviceDays: [1,1,1,1,1,0,0]
             }
+        ],
+        frequencies:[
+            {
+                startTime: '00:00:00',
+                endTime: '24:00:00',
+                exactTimes: 0,
+                headwaySecs: 600
+            }
         ]
     };
 
@@ -50,6 +59,7 @@ async function main(generalSettings) {
     let routesFileName = 'routes.txt';
     let tripsFileName = 'trips.txt';
     let stopTimesFileName = 'stop_times.txt';
+    let frequenciesFileName = 'frequencies.txt';
     
     // filling the missing addresses in geoJson files
     await geoJsonFilesFiller(geoJsonFilesFolder);
@@ -81,6 +91,10 @@ async function main(generalSettings) {
     let stopTimesObjectFields = stopTimesObjectGenerator.stopTimesObjectFields();
     let gtfsStopTimesHeadersRow = geoJsonObjectToCsv(stopTimesObjectFields, true);
     fileWriter(gtfsFolderRoute+stopTimesFileName, gtfsStopTimesHeadersRow);
+    // Writing frequencies.txt file and its headers
+    let frequenciesObjectFields = frequenciesObjectGenerator.frequenciesObjectGenerator();
+    let frequenciesHeadersRow = geoJsonObjectToCsv(frequenciesObjectFields, true);
+    fileWriter(gtfsFolderRoute+frequenciesFileName, frequenciesHeadersRow);
     
     // Writing the calendar.txt rows
     let calendarObjectValues = calendarObjectGenerator.calendarObjectGenerator(generalSettings);
@@ -118,13 +132,15 @@ async function main(generalSettings) {
             let stopTimes = stopTimesObjectGenerator.stopTimesObjectGenerator(trip.values[0], stops.values);
             let stopTimesCsvRows = geoJsonObjectToCsv(stopTimes, false);
             fileWriter(gtfsFolderRoute+stopTimesFileName, stopTimesCsvRows);
+            // Writing a frequencies.txt row for each geoJson file
+            let frequencie = frequenciesObjectGenerator.frequenciesObjectGenerator(trip.values[0], generalSettings);
+            let frequencieCsvRow = geoJsonObjectToCsv(frequencie, false);
+            fileWriter(gtfsFolderRoute+frequenciesFileName, frequencieCsvRow);
         }
         else {
             console.log(`${geoJsonObjectInput} is an invalid geoJson file !!!`);
         }
     }
-
-    // TO DO: Generating frequencies.txt for each geoJson file
 }
 
 main(getLocalSettings());
