@@ -1,7 +1,7 @@
 {
   "name": "geojson2gtfs",
   "version": "1.0.0",
-  "description": "A tiny nodeJs app to transform geoJson files (describing onDemand informal public transport routes) to its corresponding GTFS entities.",
+  "description": "A tiny nodeJs cli app to transform geoJson files (describing an onDemand informal public transport routes) to its corresponding GTFS entities.",
   "main": "index.js",
   "scripts": {
     "test": "mocha --recursive"

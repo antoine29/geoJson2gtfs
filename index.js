@@ -1,2 +1,2 @@
-const geoJsonFileReader = require('./src/geoJsonFileReader');
+const geoJsonFileReader = require('./src/geoJson2gtfs');
 
