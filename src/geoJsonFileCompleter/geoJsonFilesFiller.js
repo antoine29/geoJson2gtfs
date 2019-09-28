@@ -5,7 +5,7 @@ const coordsArrayToDirectionsArray = require('./coordsArrayToDirectionsArray');
 
 module.exports = async function geoJsonFilesFiller(geoJsonFilesFolder) {
 
-    let geoJsonFiles = filesSearcher(geoJsonFilesFolder);
+    let geoJsonFiles = filesSearcher(geoJsonFilesFolder, 'geojson');
 
     for (let fileIndex = 0; fileIndex < geoJsonFiles.length; fileIndex++) {
         

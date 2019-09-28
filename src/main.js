@@ -51,7 +51,8 @@ function getLocalSettings() {
 
 async function main(generalSettings) {
 
-    let geoJsonFilesFolder = './geoJsonFiles/*.geojson' ;
+    // let geoJsonFilesFolder = './geoJsonFiles/*.geojson' ;
+    let geoJsonFilesFolder = './geoJsonFiles/' ;
     let gtfsFolderRoute = './gtfs/';
     let calendarFileName = 'calendar.txt';
     let agencyFileName = 'agency.txt';
@@ -102,7 +103,7 @@ async function main(generalSettings) {
     fileWriter(gtfsFolderRoute+calendarFileName, gtfsCalendarRows);
     
     // Getting all geojson files in directory
-    let geoJsonFiles = filesSearcher(geoJsonFilesFolder);
+    let geoJsonFiles = filesSearcher(geoJsonFilesFolder, 'geojson');
 
     for (let geoJsonFileIndex = 0; geoJsonFileIndex < geoJsonFiles.length; geoJsonFileIndex++) {
         
