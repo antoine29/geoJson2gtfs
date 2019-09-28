@@ -51,8 +51,8 @@ function getLocalSettings() {
 
 async function main(generalSettings) {
 
-    let geoJsonFilesFolder = './geoJsonFiles/' ;
-    let gtfsFolderRoute = './gtfs/';
+    let geoJsonFilesFolder = './geoJsonFiles' ;
+    let gtfsFolderRoute = './gtfs';
     let calendarFileName = 'calendar.txt';
     let agencyFileName = 'agency.txt';
     let stopsFileName = 'stops.txt';
@@ -62,10 +62,11 @@ async function main(generalSettings) {
     let frequenciesFileName = 'frequencies.txt';
     
     // filling the missing addresses in geoJson files
+    console.log("Starting to get complete the geoJson files");
     await geoJsonFilesFiller(geoJsonFilesFolder);
 
+    console.log("Starting to write the gtfs files");
     fse.initializeEmptyFolder(gtfsFolderRoute);
-
     // These rows only have to be writen once time at the begining of the program
     // Writing calendar.txt file and its headers
     let calendarObjectFields = calendarObjectGenerator.calendarObjectFields();

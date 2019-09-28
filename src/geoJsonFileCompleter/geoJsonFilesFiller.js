@@ -15,19 +15,23 @@ module.exports = async function geoJsonFilesFiller(geoJsonFilesFolder) {
             geoJsonFileUtils.geoJsonFileReader(geoJsonFilePath) : geoJsonFilePath;
 
         if (geoJsonObjectValidator(geoJsonObjectInput)) {
-
-            // ToDo:
-            // what if I have more than one geoLine?
-            // it should be validated for not more than one geoLine or
-            // we should handle all the lines
-            console.log(`Getting addresses from file ${geoJsonFilePath}`);
-            let addresses = await coordsArrayToDirectionsArray(geoJsonObjectInput.features[0].geometry.coordinates);
-            let gtfs = {
-                addressNames: addresses
-            };
-
-            geoJsonObjectInput.gtfs = gtfs; 
-            geoJsonFileUtils.geoJsonFileWriter(geoJsonObjectInput, geoJsonFilePath);
+            if (geoJsonObjectInput.gtfs) {
+                console.log(`Skipping file: ${geoJsonFilePath}`);
+            }
+            else {
+                // ToDo:
+                // what if I have more than one geoLine?
+                // it should be validated for not more than one geoLine or
+                // we should handle all the lines
+                console.log(`Getting addresses from file ${geoJsonFilePath}`);
+                let addresses = await coordsArrayToDirectionsArray(geoJsonObjectInput.features[0].geometry.coordinates);
+                let gtfs = {
+                    addressNames: addresses
+                };
+    
+                geoJsonObjectInput.gtfs = gtfs; 
+                geoJsonFileUtils.geoJsonFileWriter(geoJsonObjectInput, geoJsonFilePath);
+            }
         }
         else {
             console.log(`${geoJsonObjectInput} is an invalid geoJson file !!!`);
