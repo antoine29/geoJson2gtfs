@@ -15,43 +15,7 @@ const tripsObjectGenerator = require('./gtfsEntitiesGenerators/tripsObjectGenera
 const stopTimesObjectGenerator = require('./gtfsEntitiesGenerators/stopsTimesGenerator');
 const frequenciesObjectGenerator = require('./gtfsEntitiesGenerators/frequenciesObjectGenerator');
 
-// function getLocalSettings() {
-//     // this will be a json file comming as parameter
-//     let settings = {
-//         agencySettings: {
-//             agencyTimeZone: "America/Caracas" ,
-//             agencyUrl: "https://github.com/antoine29"
-//         },
-//         calendarSettings: [
-//             {
-//                 serviceId: "mon-sun", 
-//                 startDate: "20120101",
-//                 endDate: "20301212",
-//                 serviceDays: [1,1,1,1,1,1,1]
-//             },
-//             {
-//                 serviceId: "mon-fri", 
-//                 startDate: "20120101",
-//                 endDate: "20301212",
-//                 serviceDays: [1,1,1,1,1,0,0]
-//             }
-//         ],
-//         frequencies:[
-//             {
-//                 startTime: '00:00:00',
-//                 endTime: '24:00:00',
-//                 exactTimes: 0,
-//                 headwaySecs: 600
-//             }
-//         ]
-//     };
-
-//     return settings;
-// }
-
-async function main(settings) {
-
-    let geoJsonFilesFolder = './geoJsonFiles' ;
+module.exports = async function geoJson2gtfs(settings, geoJsonFilesFolder) {
     let gtfsFolderRoute = './gtfs/';
     let calendarFileName = 'calendar.txt';
     let agencyFileName = 'agency.txt';

@@ -1,16 +1,25 @@
 #!/usr/bin/env node
 
 const yargs = require("yargs");
-const geojson2gtfs = require('..');
 const jsonReader = require('../src/fileHandlers/geoJsonFileUtils');
+const geojson2gtfs = require('..');
 
 const options = yargs
- .usage("Usage: - <input>")
+ .usage("Usage: geojson2gtfs -i [folder] -s [jsonFile]")
+ 
+ .help('h')
+ .alias('h', 'help')
+
  .option("i", { alias: "input", describe: "Input path to folder containing geoJson files.", type: "string", demandOption: true })
  .option("s", { alias: "settings", describe: "Aditional settings file to handle the GTFS feed creation.", type: "string", demandOption: true })
+ .option("fr", { alias: "forceReload", describe: "Force the reload of the geoJson files", type: "boolean", demandOption: false })
  .argv;
 
  console.log(`Input folder: ${options.input}`);
  console.log(`Settings file: ${options.settings}`);
+ let reloadFlag = options.fr ? true : false;
+ console.log(`forceReload : ${reloadFlag}`);
  
  let settings = jsonReader.geoJsonFileReader(options.settings);
+
+ geojson2gtfs(settings, options.input);

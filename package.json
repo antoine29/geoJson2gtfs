@@ -22,7 +22,7 @@
   "author": "Anthony Flores Gomez",
   "license": "ISC",
   "bin": {
-    "hello": "./bin/index.js"
+    "geojson2html": "./bin/geojson2html"
   },
   "bugs": {
     "url": "https://github.com/antoine29/geoJson2GTFS/issues"
