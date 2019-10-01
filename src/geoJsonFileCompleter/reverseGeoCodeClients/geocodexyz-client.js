@@ -9,7 +9,7 @@ module.exports = async function reverseGeoCodeClient(lat, long) {
 
     try {
         let url = `http://localhost:3001/MockGeocoder/ReverseGeocode?lat=${lat}&long=${long}`;
-        response = await axios.get(url);
+        response = await axios.get(url, {timeout: 5000});
     }
     catch (error) {
         console.log(`Error getting direction from coords ${lat} ${long}`)

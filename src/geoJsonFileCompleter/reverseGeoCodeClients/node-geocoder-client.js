@@ -7,6 +7,7 @@ var options = {
   httpAdapter: 'https', // Default
   apiKey: '5266cc346bf77c', // for Mapquest, OpenCage, Google Premier
   // formatter: null         // 'gpx', 'string', ...
+  timeout: 5000
 };
  
 var geocoder = NodeGeocoder(options);
