@@ -6,9 +6,15 @@ function findKeyInObject(obj, key) {
 
 module.exports = function objectFieldsFilter(obj, fields) {
     let values = [];
-    fields.forEach(field => {        
-        values.push(...findKeyInObject(obj, field));
-    });
-
-    return values;
+    try {
+        fields.forEach(field => {        
+            values.push(...findKeyInObject(obj, field));
+        });
+    }
+    catch (error){
+        console.log("Error searching values in a object");
+    }
+    finally {
+        return values;
+    }
 };

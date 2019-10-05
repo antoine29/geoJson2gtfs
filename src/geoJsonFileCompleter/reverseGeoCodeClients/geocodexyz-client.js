@@ -12,7 +12,7 @@ module.exports = async function reverseGeoCodeClient(lat, long) {
         response = await axios.get(url, {timeout: 5000});
     }
     catch (error) {
-        console.log(`Error getting direction from coords ${lat} ${long}`)
+        console.log(`Error getting direction from coords ${lat} ${long}`);
         response = {
             data: [],
             address: [],

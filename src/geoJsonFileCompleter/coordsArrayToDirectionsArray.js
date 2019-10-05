@@ -30,19 +30,26 @@ module.exports = async function coordsArrayToDirectionsArray(coords) {
         long = coord[0];
         lati = coord[1];
 
-        response = await geoCodeXyzClient(lati, long);
-        // response = await nodeGeocoderClient(lati, long);
-        direction = getAddressFromResponse(
-            response, 
-            [
-                'addr-street', 'staddress', // geocode.xyz endpoint fields
-                'streetName',               // geocoder npm fields
-                'neighbourhood', 'road'     // locationIQ endpoint fields
-            ]
-        );
-        directions.push(direction);
-        console.log(`${index+1}/${totalSize} coords processed`);
-        await timeout(700); // we have to wait at least one second to make the next req
+        try {
+            // response = await geoCodeXyzClient(lati, long);
+            response = await nodeGeocoderClient(lati, long);
+            direction = getAddressFromResponse(
+                response, 
+                [
+                    'addr-street', 'staddress', // geocode.xyz endpoint fields
+                    'streetName',               // geocoder npm fields
+                    'neighbourhood', 'road'     // locationIQ endpoint fields
+                ]
+            );
+        }
+        catch{
+            direction = '';
+        }
+        finally {
+            directions.push(direction);
+            console.log(`${direction}: ${index+1}/${totalSize} coords processed`);
+            await timeout(700); // we have to wait at least one second to make the next req
+        }
     }
 
     return directions;
