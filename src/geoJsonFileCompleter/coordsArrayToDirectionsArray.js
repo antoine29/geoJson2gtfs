@@ -2,17 +2,14 @@ const nodeGeocoderClient = require('./reverseGeoCodeClients/node-geocoder-client
 const geoCodeXyzClient = require('./reverseGeoCodeClients/geocodexyz-client');
 const objectFieldsFilter = require('../geoJsonObjectUtils/objectFieldsFilter');
 
-let lastValidDirection = "";
-
 function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function getAddressFromResponse(obj, fields) {
     let receivedAddresses = objectFieldsFilter(obj, fields);
-    if (receivedAddresses.length === 0 ) return lastValidDirection+"*";
-    if (receivedAddresses[0] === undefined) return lastValidDirection+"*";
-    lastValidDirection = receivedAddresses[0];
+    if (receivedAddresses.length === 0 ) return 'S/N';
+    if (receivedAddresses[0] === undefined) return 'S/N';
     return receivedAddresses[0];
 }
 
