@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 const yargs = require("yargs");
-const jsonReader = require('../src/fileHandlers/geoJsonFileUtils');
 const geojson2gtfs = require('..');
 
 const options = yargs
@@ -20,7 +19,4 @@ const options = yargs
  let reloadFlag = options.fr ? true : false;
  console.log(`forceReload : ${reloadFlag}`);
  
- let settings = jsonReader.geoJsonFileReader(options.settings);
-
- geojson2gtfs(settings, options.input);
- 
+ geojson2gtfs(options.settings, options.input);

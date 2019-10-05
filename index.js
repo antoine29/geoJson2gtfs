@@ -4,6 +4,7 @@ const geoJsonObjectValidator = require('./src/geoJsonObjectUtils/geoJsonObjectVa
 const geoJsonObjectToCsv = require('./src/geoJsonObjectToCsv/geoJsonObjectToCsv');
 const fse = require('./src/fileHandlers/fs-extraUtils');
 const filesSearcher = require('./src/fileHandlers/filesSearcher');
+const jsonReader = require('./src/fileHandlers/geoJsonFileUtils');
 
 const geoJsonFilesFiller = require('./src/geoJsonFileCompleter/geoJsonFilesFiller');
 
@@ -15,7 +16,9 @@ const tripsObjectGenerator = require('./src/gtfsEntitiesGenerators/tripsObjectGe
 const stopTimesObjectGenerator = require('./src/gtfsEntitiesGenerators/stopsTimesGenerator');
 const frequenciesObjectGenerator = require('./src/gtfsEntitiesGenerators/frequenciesObjectGenerator');
 
-module.exports = async function geoJson2gtfs(settings, geoJsonFilesFolder) {
+module.exports = async function geoJson2gtfs(settingsFile, geoJsonFilesFolder) {
+    let settings = jsonReader.geoJsonFileReader(settingsFile);
+
     let gtfsFolderRoute = './gtfs/';
     let calendarFileName = 'calendar.txt';
     let agencyFileName = 'agency.txt';
