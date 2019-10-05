@@ -43,7 +43,7 @@ module.exports = async function coordsArrayToDirectionsArray(coords) {
             );
         }
         catch{
-            direction = '';
+            direction = 'S/N';
         }
         finally {
             directions.push(direction);
