@@ -41,10 +41,10 @@ exports.stopTimesObjectGenerator = function(trip, stops) {
         departureTime: '00:00:00',
         arrivalTime: '00:00:00',
         shapeDistTraveled: null,
-        timepoit: null
+        timepoint: null
     });
 
-    for (let i=1; i<stops.length-1; i++) {
+    for (let i=2; i<stops.length-1; i++) {
         stopTimes.push({
             tripId: trip.tripId,
             stopId: stops[i].stopId,
@@ -52,7 +52,7 @@ exports.stopTimesObjectGenerator = function(trip, stops) {
             arrivalTime: null,
             departureTime: null,
             shapeDistTraveled: null,
-            timepoit: null
+            timepoint: null
         });
     }
 
@@ -63,7 +63,7 @@ exports.stopTimesObjectGenerator = function(trip, stops) {
         departureTime: '01:00:00',
         arrivalTime: '01:00:00',
         shapeDistTraveled: null,
-        timepoit: null
+        timepoint: null
     });
     
     return {
