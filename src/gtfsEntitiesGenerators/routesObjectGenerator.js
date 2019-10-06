@@ -32,19 +32,19 @@ function getRouteID(geoJsonFileIndex) {
 }
 
 function getRouteLongName(geoJsonObject) {
-    if (geoJsonObject.features[0].properties.agency) return `Route: ${geoJsonObject.features[0].properties.agency}`;
-    if (geoJsonObject.features[0].properties.agencia) return `Ruta: ${geoJsonObject.features[0].properties.agencia}`;
+    if (geoJsonObject.features[0].properties.agency) return `Route:${geoJsonObject.features[0].properties.agency}`;
+    if (geoJsonObject.features[0].properties.agencia) return `Ruta:${geoJsonObject.features[0].properties.agencia}`;
     throw "The geoJson file must have an agency field";
 }
 
 function getRouteShortName(geoJsonObject) {
-    if (geoJsonObject.features[0].properties.agency) return `Route: ${geoJsonObject.features[0].properties.agency}`;
-    if (geoJsonObject.features[0].properties.agencia) return `Ruta: ${geoJsonObject.features[0].properties.agencia}`;
+    if (geoJsonObject.features[0].properties.agency) return `${geoJsonObject.features[0].properties.agency}`;
+    if (geoJsonObject.features[0].properties.agencia) return `${geoJsonObject.features[0].properties.agencia}`;
     throw "The geoJson file must have an agency field";
 }
 
 function getRouteType() {
-    // 3 is the maginc number to identify a bus type route
+    // 3 is the magic number to identify a bus type route
     return 3;
 }
 
