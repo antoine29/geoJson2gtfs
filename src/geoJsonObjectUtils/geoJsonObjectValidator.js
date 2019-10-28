@@ -65,7 +65,7 @@ function geoJsonCoordinatesFieldValidator(coordinates) {
 }
 
 function coordinateValidator(coordinate){
-    // toDo: implemet this
+    // toDo: implement this
     return true;
 }
 

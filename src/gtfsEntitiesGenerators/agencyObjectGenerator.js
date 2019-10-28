@@ -20,7 +20,7 @@ function gtfsAgencyFileFields() {
 }
 
 function getAgencyId(geoJsonFileIndex) {
-    return `A_${geoJsonFileIndex + 1}`;
+    return `A${geoJsonFileIndex + 1}`;
 }
 
 function getAgencyName(geoJsonObject) {

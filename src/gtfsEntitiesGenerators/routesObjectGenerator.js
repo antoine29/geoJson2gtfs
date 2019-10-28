@@ -23,12 +23,14 @@ function gtfsRoutesFileFields() {
     ];
 }
 
-function getAgencyId(geoJsonFileIndex) {
-    return `A_${geoJsonFileIndex + 1}`;
+// function getAgencyId(geoJsonFileIndex) {
+function getAgencyId(agency) {
+    // return `A_${geoJsonFileIndex + 1}`;
+    return agency.values[0].agencyId;
 }
 
 function getRouteID(geoJsonFileIndex) {
-    return `R_${geoJsonFileIndex}`;
+    return `R${geoJsonFileIndex + 1}`;
 }
 
 function getRouteLongName(geoJsonObject) {
@@ -48,12 +50,13 @@ function getRouteType() {
     return 3;
 }
 
-exports.routesObjectGenerator = function(geoJsonObject, geoJsonFileIndex) {
+exports.routesObjectGenerator = function(geoJsonObject, geoJsonFileIndex, agency) {
     return {
         fields: gtfsRoutesFileFields(),
         values: [
             {
-                agencyId: getAgencyId(geoJsonFileIndex),
+                // agencyId: getAgencyId(geoJsonFileIndex),
+                agencyId: getAgencyId(agency),
                 routeId: getRouteID(geoJsonFileIndex),
                 routeLongName: getRouteLongName(geoJsonObject),
                 routeShortName: getRouteShortName(geoJsonObject),

@@ -31,12 +31,12 @@ function getStopId(geoJsonObjectIndex, stopIndex){
 
 function getStopLat(geoJsonObject, i){
     let coordinate = geoJsonObject.features[0].geometry.coordinates[i];
-    return coordinate[0];
+    return coordinate[1];
 }
 
 function getStopLong(geoJsonObject, i){
     let coordinate = geoJsonObject.features[0].geometry.coordinates[i];
-    return coordinate[1];
+    return coordinate[0];
 }
 
 exports.stopsObjectGenerator = function(geoJsonObject, geoJsonObjectIndex) {

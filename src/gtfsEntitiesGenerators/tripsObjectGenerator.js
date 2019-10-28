@@ -20,11 +20,12 @@ function gtfsTripsFileFields() {
 }
 
 function getTripId(geoJsonFileIndex) {
-    return `T_${geoJsonFileIndex + 1}`;
+    return `T${geoJsonFileIndex + 1}`;
 }
 
-function getRouteID(geoJsonFileIndex) {
-    return `R_${geoJsonFileIndex}`;
+// function getRouteID(geoJsonFileIndex) {
+function getRouteID(route) {
+    return route.values[0].routeId;
 }
 
 function getServiceId(settings, serviceIndex) {
@@ -38,13 +39,13 @@ function getTripHeadSign(geoJsonObject) {
     throw "The geoJson file must have an agency field";
 }
 
-exports.tripsObjectGenerator = function(geoJsonObject, settings, geoJsonFileIndex) {
+exports.tripsObjectGenerator = function(geoJsonObject, settings, geoJsonFileIndex, route) {
     return {
         fields: gtfsTripsFileFields(),
         values: [
             {
                 tripId: getTripId(geoJsonFileIndex),
-                routeId: getRouteID(geoJsonFileIndex),
+                routeId: getRouteID(route),
                 serviceId: getServiceId(settings, 0),
                 tripHeadSign: getTripHeadSign(geoJsonObject)
             }

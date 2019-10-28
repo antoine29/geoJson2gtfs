@@ -91,11 +91,11 @@ module.exports = async function geoJson2gtfs(settingsFile, geoJsonFilesFolder) {
                 let stopCsvRows = geoJsonObjectToCsv(stops, false);
                 streamFileWriter(gtfsFolderRoute+stopsFileName, stopCsvRows);
                 // Writing a routes.txt row for each geoJson file
-                let route = routesObjectGenerator.routesObjectGenerator(geoJsonObjectInput, geoJsonFileIndex);
+                let route = routesObjectGenerator.routesObjectGenerator(geoJsonObjectInput, geoJsonFileIndex, agency);
                 let routeCsvRow = geoJsonObjectToCsv(route, false);
                 streamFileWriter(gtfsFolderRoute+routesFileName, routeCsvRow);
                 // Writing a trips.txt row for each geoJson file
-                let trip = tripsObjectGenerator.tripsObjectGenerator(geoJsonObjectInput, settings, geoJsonFileIndex);
+                let trip = tripsObjectGenerator.tripsObjectGenerator(geoJsonObjectInput, settings, geoJsonFileIndex, route);
                 let tripCsvRow = geoJsonObjectToCsv(trip, false);
                 streamFileWriter(gtfsFolderRoute+tripsFileName, tripCsvRow);
                 // Writing stop_times.txt rows for each geoJson file
