@@ -15,7 +15,11 @@ function gtfsTripsFileFields() {
         {
             value: 'tripHeadSign',
             label: 'trip_headsign'
-        }
+        },
+        {
+            value: 'shapeId',
+            label: 'shape_id'
+        },
     ];
 }
 
@@ -39,7 +43,7 @@ function getTripHeadSign(geoJsonObject) {
     throw "The geoJson file must have an agency field";
 }
 
-exports.tripsObjectGenerator = function(geoJsonObject, settings, geoJsonFileIndex, route) {
+exports.tripsObjectGenerator = function(geoJsonObject, settings, geoJsonFileIndex, route, shapeId) {
     return {
         fields: gtfsTripsFileFields(),
         values: [
@@ -47,7 +51,8 @@ exports.tripsObjectGenerator = function(geoJsonObject, settings, geoJsonFileInde
                 tripId: getTripId(geoJsonFileIndex),
                 routeId: getRouteID(route),
                 serviceId: getServiceId(settings, 0),
-                tripHeadSign: getTripHeadSign(geoJsonObject)
+                tripHeadSign: getTripHeadSign(geoJsonObject),
+                shapeId: shapeId
             }
         ]
     };

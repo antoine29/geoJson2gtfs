@@ -14,6 +14,7 @@ const routesObjectGenerator = require('./gtfsEntitiesGenerators/routesObjectGene
 const tripsObjectGenerator = require('./gtfsEntitiesGenerators/tripsObjectGenerator');
 const stopTimesObjectGenerator = require('./gtfsEntitiesGenerators/stopsTimesGenerator');
 const frequenciesObjectGenerator = require('./gtfsEntitiesGenerators/frequenciesObjectGenerator');
+const shapesObjectGenerator = require('./gtfsEntitiesGenerators/shapesObjectGenerator');
 
 module.exports = async function geoJson2gtfs(settings, geoJsonFilesFolder) {
     let gtfsFolderRoute = './gtfs/';
@@ -24,6 +25,7 @@ module.exports = async function geoJson2gtfs(settings, geoJsonFilesFolder) {
     let tripsFileName = 'trips.txt';
     let stopTimesFileName = 'stop_times.txt';
     let frequenciesFileName = 'frequencies.txt';
+    let shapesFileName = 'shapes.txt';
     
     // filling the missing addresses in geoJson files
     console.log("Starting to get complete the geoJson files");
@@ -60,6 +62,10 @@ module.exports = async function geoJson2gtfs(settings, geoJsonFilesFolder) {
     let frequenciesObjectFields = frequenciesObjectGenerator.frequenciesObjectFields();
     let frequenciesHeadersRow = geoJsonObjectToCsv(frequenciesObjectFields, true);
     streamFileWriter(gtfsFolderRoute+frequenciesFileName, frequenciesHeadersRow);
+    // Writing shapes.txt file and its headers
+    let shapesObjectFields = shapesObjectGenerator.shapesObjectFields();
+    let shapesHeadersRow = geoJsonObjectToCsv(shapesObjectFields, true);
+    streamFileWriter(gtfsFolderRoute+shapesFileName, shapesHeadersRow);
     
     // Writing the calendar.txt rows
     let calendarObjectValues = calendarObjectGenerator.calendarObjectGenerator(settings);
@@ -101,6 +107,10 @@ module.exports = async function geoJson2gtfs(settings, geoJsonFilesFolder) {
             let frequencie = frequenciesObjectGenerator.frequenciesObjectGenerator(trip.values[0], settings);
             let frequencieCsvRow = geoJsonObjectToCsv(frequencie, false);
             streamFileWriter(gtfsFolderRoute+frequenciesFileName, frequencieCsvRow);
+            // Writing a shapes.txt row for each geoJson file
+            let shapes = shapesObjectGenerator.shapesObjectGenerator(agency, geoJsonObjectInput);
+            let shapesCsvRow = geoJsonObjectToCsv(shapes, false);
+            streamFileWriter(gtfsFolderRoute+shapesFileName, shapesCsvRow);
         }
         else {
             console.log(`${geoJsonObjectInput} is an invalid geoJson file !!!`);
