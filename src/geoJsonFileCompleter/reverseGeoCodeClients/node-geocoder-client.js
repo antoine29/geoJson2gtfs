@@ -2,15 +2,6 @@ var NodeGeocoder = require('node-geocoder');
 const settingsHandler = require('../../settingsHandler/settingsHandler');
 const colorprint = require("colorprint");
 
-// var options = {
-//   provider: 'locationiq',
- 
-//   // Optional depending on the providers
-//   httpAdapter: 'https',         // Default
-//   apiKey: '5266cc346bf77c',     // for Mapquest, OpenCage, Google Premier
-//   timeout: 5000
-// };
- 
 module.exports = async function reverseGeoCode(lati, long) {
 
     var geocoder;
