@@ -1,7 +1,9 @@
-const filesSearcher = require('../fileHandlers/filesSearcher');
-const geoJsonObjectValidator = require('../geoJsonObjectUtils/geoJsonObjectValidator');
-const geoJsonFileUtils = require('../fileHandlers/geoJsonFileUtils');
+const colorprint = require('colorprint');
 const coordsArrayToDirectionsArray = require('./coordsArrayToDirectionsArray');
+const filesSearcher = require('../fileHandlers/filesSearcher');
+const geoJsonFileUtils = require('../fileHandlers/geoJsonFileUtils');
+const geoJsonObjectValidator = require('../geoJsonObjectUtils/geoJsonObjectValidator');
+const settingsHandler = require('../settingsHandler/settingsHandler');
 
 module.exports = async function geoJsonFilesFiller(geoJsonFilesFolder) {
 
@@ -16,25 +18,32 @@ module.exports = async function geoJsonFilesFiller(geoJsonFilesFolder) {
 
         if (geoJsonObjectValidator(geoJsonObjectInput)) {
             if (geoJsonObjectInput.gtfs) {
-                console.log(`Skipping file: ${geoJsonFilePath}`);
+                colorprint.info(`Skipping file: ${geoJsonFilePath} since the file already has the addresses saved`);
             }
             else {
-                // ToDo:
-                // what if I have more than one geoLine?
-                // it should be validated for not more than one geoLine or
-                // we should handle all the lines
-                console.log(`Getting addresses from file ${geoJsonFilePath}`);
-                let addresses = await coordsArrayToDirectionsArray(geoJsonObjectInput.features[0].geometry.coordinates);
+                let addresses;
+                if (!settingsHandler.getSettings().geocoderOptions) {
+                    colorprint.error('Geocoder options have not been declared in settings file. S/N addresses will be used \n');
+                    addresses = Array(geoJsonObjectInput.features[0].geometry.coordinates.length).fill('S/N');
+                }
+                else {
+                    // ToDo:
+                    // what if I have more than one geoLine?
+                    // it should be validated for not more than one geoLine or
+                    // we should handle all the lines
+                    colorprint.info(`Getting addresses from file ${geoJsonFilePath}`);
+                    addresses = await coordsArrayToDirectionsArray(geoJsonObjectInput.features[0].geometry.coordinates);
+                }
+
                 let gtfs = {
                     addressNames: addresses
                 };
-    
                 geoJsonObjectInput.gtfs = gtfs; 
                 geoJsonFileUtils.geoJsonFileWriter(geoJsonObjectInput, geoJsonFilePath);
             }
         }
         else {
-            console.log(`${geoJsonObjectInput} is an invalid geoJson file !!!`);
+            colorprint.error(`${geoJsonObjectInput} is an invalid geoJson file !!!`);
         }
     }   
 }

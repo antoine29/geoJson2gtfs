@@ -1,4 +1,5 @@
 const Find = require('find-key');
+const colorprint = require('colorprint');
 
 function findKeyInObject(obj, key) {
     return Find(obj, key);
@@ -12,7 +13,7 @@ module.exports = function objectFieldsFilter(obj, fields) {
         });
     }
     catch (error){
-        console.log("Error searching values in a object");
+        colorprint.error("Error searching values in a object");
     }
     finally {
         return values;

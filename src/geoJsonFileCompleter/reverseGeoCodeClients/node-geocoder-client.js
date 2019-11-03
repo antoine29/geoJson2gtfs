@@ -1,6 +1,7 @@
 var NodeGeocoder = require('node-geocoder');
 const settingsHandler = require('../../settingsHandler/settingsHandler');
- 
+const colorprint = require("colorprint");
+
 // var options = {
 //   provider: 'locationiq',
  
@@ -19,7 +20,7 @@ module.exports = async function reverseGeoCode(lati, long) {
         geocoder = NodeGeocoder(options);
     }
     catch {
-        console.log('error trying to initialize the geocoder using the settings passed');
+        colorprint.error('error trying to initialize the geocoder using the settings passed');
         return 'S/N';
     }
 
@@ -30,7 +31,7 @@ module.exports = async function reverseGeoCode(lati, long) {
 
     await geocoder.reverse({lat:lati, lon:long}, function(err, res) {
         if (err) {
-            console.log(`Error getting direction from coords ${lati} ${long}`)
+            colorprint.error(`Error getting direction from coords ${lati} ${long}`);
         }
         else {
             response = res[0];

@@ -6,6 +6,7 @@ const fse = require('./src/fileHandlers/fs-extraUtils');
 const filesSearcher = require('./src/fileHandlers/filesSearcher');
 const jsonReader = require('./src/fileHandlers/geoJsonFileUtils');
 const settingsHandler = require('./src/settingsHandler/settingsHandler');
+const colorprint = require("colorprint");
 
 const geoJsonFilesFiller = require('./src/geoJsonFileCompleter/geoJsonFilesFiller');
 
@@ -33,11 +34,11 @@ module.exports = async function geoJson2gtfs(settingsFile, geoJsonFilesFolder) {
     let frequenciesFileName = 'frequencies.txt';
     let shapesFileName = 'shapes.txt';
     
-    // filling the missing addresses in geoJson files
-    console.log("Starting to get complete the geoJson files");
+    colorprint.info("Starting to fill addresses for coordiantes in the geoJson files \n");
     await geoJsonFilesFiller(geoJsonFilesFolder);
-
-    console.log("Starting to write the gtfs files");
+    
+    colorprint.info("\n");
+    colorprint.info("Starting to write the gtfs files \n");
     fse.initializeEmptyFolder(gtfsFolderRoute);
     // These rows only have to be writen once time at the begining of the program
     // Writing calendar.txt file and its headers
@@ -117,9 +118,11 @@ module.exports = async function geoJson2gtfs(settingsFile, geoJsonFilesFolder) {
                 let frequencie = frequenciesObjectGenerator.frequenciesObjectGenerator(trip.values[0], settings);
                 let frequencieCsvRow = geoJsonObjectToCsv(frequencie, false);
                 streamFileWriter(gtfsFolderRoute+frequenciesFileName, frequencieCsvRow);
+
+                colorprint.info('Transformation is done \n');
         }
         else {
-            console.log(`${geoJsonObjectInput} is an invalid geoJson file !!!`);
+            colorprint.error(`${geoJsonObjectInput} is an invalid geoJson file !!!`);
         }
     }
 }

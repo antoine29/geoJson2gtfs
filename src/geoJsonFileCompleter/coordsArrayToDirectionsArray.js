@@ -2,6 +2,7 @@ const nodeGeocoderClient = require('./reverseGeoCodeClients/node-geocoder-client
 const geoCodeXyzClient = require('./reverseGeoCodeClients/geocodexyz-client');
 const objectFieldsFilter = require('../geoJsonObjectUtils/objectFieldsFilter');
 const settingsHandler = require('../settingsHandler/settingsHandler');
+const colorprint = require("colorprint");
 
 function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -15,16 +16,15 @@ function getAddressFromResponse(obj, fields) {
 }
 
 module.exports = async function coordsArrayToDirectionsArray(coords) {
-    // if (settingsHandler.getSettings().geocoderOptions) {
-    //     console.log("settings on coordsArrayToDirectionsArray");
-    //     console.log(settingsHandler.getSettings());
-    // }
-
     let totalSize = coords.length;
     let direction;
     let directions = [];
     let coord, lati, long;
     let response;
+
+    if (!settingsHandler.getSettings().geocoderOptions) {
+        colorprint.error('Geocoder options have not been declared in settings file. S/N addresses will be used \n');
+    }
 
     for (let index=0; index<coords.length; index++) {
 
@@ -50,12 +50,11 @@ module.exports = async function coordsArrayToDirectionsArray(coords) {
             }
         }
         catch(error){
-            // console.log(error);
             direction = 'S/N';
         }
         finally {
             directions.push(direction);
-            console.log(`${direction}: ${index+1}/${totalSize} coords processed`);
+            colorprint.info(`${direction}: ${index+1}/${totalSize} coords processed`);
             await timeout(700); // we have to wait at least one second to make the next req
         }
     }

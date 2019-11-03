@@ -1,4 +1,5 @@
 const axios = require('axios');
+const colorprint = require('colorprint');
 
 module.exports = async function reverseGeoCodeClient(lat, long) {
 
@@ -12,7 +13,7 @@ module.exports = async function reverseGeoCodeClient(lat, long) {
         response = await axios.get(url, {timeout: 5000});
     }
     catch (error) {
-        console.log(`Error getting direction from coords ${lat} ${long}`);
+        colorprint.error(`Error getting direction from coords ${lat} ${long}, using S/N instead`);
         response = {
             data: [],
             address: [],

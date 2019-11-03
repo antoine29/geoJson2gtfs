@@ -1,5 +1,5 @@
 const fs = require('fs');
-
+const colorprint = require('colorprint');
 module.exports = function streamFileWriter(filePath, file) {
     filePath = './' + filePath;
     
@@ -10,12 +10,11 @@ module.exports = function streamFileWriter(filePath, file) {
     
     writeStream.write(file+'\n', err => {
         if(err) {
-            console.log(`Error trying to write file ${filePath}`);
+            colorprint.fatal(`Error trying to write file ${filePath}`)
         }
     });
     
     writeStream.on('finish', () => {
-        console.log(`writing to ${filePath} is done`);
     });
     
     writeStream.end();
