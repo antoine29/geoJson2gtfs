@@ -5,6 +5,7 @@ const geoJsonObjectToCsv = require('./src/geoJsonObjectToCsv/geoJsonObjectToCsv'
 const fse = require('./src/fileHandlers/fs-extraUtils');
 const filesSearcher = require('./src/fileHandlers/filesSearcher');
 const jsonReader = require('./src/fileHandlers/geoJsonFileUtils');
+const settingsHandler = require('./src/settingsHandler/settingsHandler');
 
 const geoJsonFilesFiller = require('./src/geoJsonFileCompleter/geoJsonFilesFiller');
 
@@ -20,6 +21,7 @@ const shapesObjectGenerator = require('./src/gtfsEntitiesGenerators/shapesObject
 module.exports = async function geoJson2gtfs(settingsFile, geoJsonFilesFolder) {
     // toDo: validation for this object
     let settings = jsonReader.geoJsonFileReader(settingsFile);
+    settingsHandler.setSettings(settings);
 
     let gtfsFolderRoute = './gtfs/';
     let calendarFileName = 'calendar.txt';
@@ -86,8 +88,7 @@ module.exports = async function geoJson2gtfs(settingsFile, geoJsonFilesFolder) {
         const geoJsonObjectInput = typeof geoJsonFilePath === "string" ?
             geoJsonFileUtils.geoJsonFileReader(geoJsonFilePath) : geoJsonFilePath;
 
-        if (geoJsonObjectValidator(geoJsonObjectInput) &&
-            geoJsonObjectInput.features[0].geometry.coordinates.length === geoJsonObjectInput.gtfs.addressNames.length) {
+        if (geoJsonObjectValidator(geoJsonObjectInput)) {
                 // Writing an agency.txt row for each geoJson file
                 let agency = agencyObjectGenerator.agencyObjectGenerator(geoJsonObjectInput, settings, geoJsonFileIndex);
                 let agencyCsvRow = geoJsonObjectToCsv(agency, false);

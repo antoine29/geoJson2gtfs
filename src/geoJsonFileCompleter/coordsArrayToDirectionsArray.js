@@ -1,6 +1,7 @@
 const nodeGeocoderClient = require('./reverseGeoCodeClients/node-geocoder-client');
 const geoCodeXyzClient = require('./reverseGeoCodeClients/geocodexyz-client');
 const objectFieldsFilter = require('../geoJsonObjectUtils/objectFieldsFilter');
+const settingsHandler = require('../settingsHandler/settingsHandler');
 
 function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -14,7 +15,11 @@ function getAddressFromResponse(obj, fields) {
 }
 
 module.exports = async function coordsArrayToDirectionsArray(coords) {
-    
+    // if (settingsHandler.getSettings().geocoderOptions) {
+    //     console.log("settings on coordsArrayToDirectionsArray");
+    //     console.log(settingsHandler.getSettings());
+    // }
+
     let totalSize = coords.length;
     let direction;
     let directions = [];
@@ -28,18 +33,24 @@ module.exports = async function coordsArrayToDirectionsArray(coords) {
         lati = coord[1];
 
         try {
-            // response = await geoCodeXyzClient(lati, long);
-            response = await nodeGeocoderClient(lati, long);
-            direction = getAddressFromResponse(
-                response, 
-                [
-                    'addr-street', 'staddress', // geocode.xyz endpoint fields
-                    'streetName',               // geocoder npm fields
-                    'neighbourhood', 'road'     // locationIQ endpoint fields
-                ]
-            );
+            if (settingsHandler.getSettings().geocoderOptions) {
+                // response = await geoCodeXyzClient(lati, long);
+                response = await nodeGeocoderClient(lati, long);
+                direction = getAddressFromResponse(
+                    response, 
+                    [
+                        'addr-street', 'staddress', // geocode.xyz endpoint fields
+                        'streetName',               // geocoder npm fields
+                        'neighbourhood', 'road'     // locationIQ endpoint fields
+                    ]
+                );
+            }
+            else {
+                direction = 'S/N';
+            }
         }
-        catch{
+        catch(error){
+            // console.log(error);
             direction = 'S/N';
         }
         finally {
