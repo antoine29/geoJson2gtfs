@@ -13,7 +13,7 @@ const options = yargs
  .option("i", { alias: "input", describe: "Input path to folder containing geoJson files.", type: "string", demandOption: true })
  .option("s", { alias: "settings", describe: "Aditional settings file to handle the GTFS feed creation.", type: "string", demandOption: true })
  .option("fr", { alias: "forceReload", describe: "Force the reload of the geoJson files", type: "boolean", demandOption: false })
- .option("z", { alias: "zip compression", describe: "Compress the generated files in zip file", type: "boolean", demandOption: false })
+ .option("z", { alias: "zip compression", describe: "Compress the generated files in a zip file", type: "boolean", demandOption: false })
  .argv;
 
 

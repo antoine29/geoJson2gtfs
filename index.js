@@ -19,7 +19,7 @@ const stopTimesObjectGenerator = require('./src/gtfsEntitiesGenerators/stopsTime
 const frequenciesObjectGenerator = require('./src/gtfsEntitiesGenerators/frequenciesObjectGenerator');
 const shapesObjectGenerator = require('./src/gtfsEntitiesGenerators/shapesObjectGenerator');
 
-module.exports = async function geoJson2gtfs(settingsFile, geoJsonFilesFolder) {
+module.exports = async function geoJson2gtfs(settingsFile, geoJsonFilesFolder, zipCompression) {
     // toDo: validation for this object
     let settings = jsonReader.geoJsonFileReader(settingsFile);
     settingsHandler.setSettings(settings);
@@ -94,32 +94,44 @@ module.exports = async function geoJson2gtfs(settingsFile, geoJsonFilesFolder) {
                 let agency = agencyObjectGenerator.agencyObjectGenerator(geoJsonObjectInput, settings, geoJsonFileIndex);
                 let agencyCsvRow = geoJsonObjectToCsv(agency, false);
                 streamFileWriter(gtfsFolderRoute+agencyFileName, agencyCsvRow);
+                colorprint.info(`${calendarFileName} \t --> \t OK`);
                 // Writing stop.txt rows for each geoJson file
                 let stops = stopsObjectGenerator.stopsObjectGenerator(geoJsonObjectInput, geoJsonFileIndex);
                 let stopCsvRows = geoJsonObjectToCsv(stops, false);
                 streamFileWriter(gtfsFolderRoute+stopsFileName, stopCsvRows);
+                colorprint.info(`${stopsFileName} \t --> \t OK`);
                 // Writing a routes.txt row for each geoJson file
                 let route = routesObjectGenerator.routesObjectGenerator(geoJsonObjectInput, geoJsonFileIndex, agency);
                 let routeCsvRow = geoJsonObjectToCsv(route, false);
                 streamFileWriter(gtfsFolderRoute+routesFileName, routeCsvRow);
+                colorprint.info(`${routesFileName} \t --> \t OK`);
                 // Writing a shapes.txt row for each geoJson file
                 let shapes = shapesObjectGenerator.shapesObjectGenerator(agency, geoJsonObjectInput);
                 let shapesCsvRow = geoJsonObjectToCsv(shapes, false);
                 streamFileWriter(gtfsFolderRoute+shapesFileName, shapesCsvRow);
+                colorprint.info(`${shapesFileName} \t --> \t OK`);
                 // Writing a trips.txt row for each geoJson file
                 let trip = tripsObjectGenerator.tripsObjectGenerator(geoJsonObjectInput, settings, geoJsonFileIndex, route, shapes.values[0].shapeId);
                 let tripCsvRow = geoJsonObjectToCsv(trip, false);
                 streamFileWriter(gtfsFolderRoute+tripsFileName, tripCsvRow);
+                colorprint.info(`${tripsFileName} \t --> \t OK`);
                 // Writing stop_times.txt rows for each geoJson file
                 let stopTimes = stopTimesObjectGenerator.stopTimesObjectGenerator(trip.values[0], stops.values);
                 let stopTimesCsvRows = geoJsonObjectToCsv(stopTimes, false);
                 streamFileWriter(gtfsFolderRoute+stopTimesFileName, stopTimesCsvRows);
+                colorprint.info(`${stopTimesFileName} \t --> \t OK`);
                 // Writing a frequencies.txt row for each geoJson file
                 let frequencie = frequenciesObjectGenerator.frequenciesObjectGenerator(trip.values[0], settings);
                 let frequencieCsvRow = geoJsonObjectToCsv(frequencie, false);
                 streamFileWriter(gtfsFolderRoute+frequenciesFileName, frequencieCsvRow);
+                colorprint.info(`${frequenciesFileName}  --> \t OK \n`);
 
-                colorprint.info('Transformation is done \n');
+                if (zipCompression) {
+                    colorprint.info('lets compress this shit');
+                }
+                else {
+                    colorprint.info(`The files has been saved in ${gtfsFolderRoute} folder`);
+                }
         }
         else {
             colorprint.error(`${geoJsonObjectInput} is an invalid geoJson file !!!`);
