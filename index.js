@@ -7,6 +7,7 @@ const filesSearcher = require('./src/fileHandlers/filesSearcher');
 const jsonReader = require('./src/fileHandlers/geoJsonFileUtils');
 const settingsHandler = require('./src/settingsHandler/settingsHandler');
 const colorprint = require("colorprint");
+const zipCompressionTool = require('./src/fileHandlers/zipCompressionTool/zipCompressionTool');
 
 const geoJsonFilesFiller = require('./src/geoJsonFileCompleter/geoJsonFilesFiller');
 
@@ -128,6 +129,8 @@ module.exports = async function geoJson2gtfs(settingsFile, geoJsonFilesFolder, z
 
                 if (zipCompression) {
                     colorprint.info('lets compress this shit');
+
+                    zipCompressionTool.compressFolder().then(() => console.log("OK"), () => console.log("FAIL"));
                 }
                 else {
                     colorprint.info(`The files has been saved in ${gtfsFolderRoute} folder`);
