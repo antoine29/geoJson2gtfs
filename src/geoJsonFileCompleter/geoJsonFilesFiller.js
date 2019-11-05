@@ -5,7 +5,7 @@ const geoJsonFileUtils = require('../fileHandlers/geoJsonFileUtils');
 const geoJsonObjectValidator = require('../geoJsonObjectUtils/geoJsonObjectValidator');
 const settingsHandler = require('../settingsHandler/settingsHandler');
 
-module.exports = async function geoJsonFilesFiller(geoJsonFilesFolder) {
+module.exports = async function geoJsonFilesFiller(geoJsonFilesFolder, loadAddresses) {
 
     let geoJsonFiles = filesSearcher(geoJsonFilesFolder, 'geojson');
 
@@ -22,8 +22,10 @@ module.exports = async function geoJsonFilesFiller(geoJsonFilesFolder) {
             }
             else {
                 let addresses;
-                if (!settingsHandler.getSettings().geocoderOptions) {
-                    colorprint.error('Geocoder options have not been declared in settings file. S/N addresses will be used \n');
+                if (!settingsHandler.getSettings().geocoderOptions || !loadAddresses) {
+                    if (!settingsHandler.getSettings().geocoderOptions) {
+                        colorprint.error('Geocoder options have not been declared in settings file. S/N addresses will be used');
+                    }
                     addresses = Array(geoJsonObjectInput.features[0].geometry.coordinates.length).fill('S/N');
                 }
                 else {

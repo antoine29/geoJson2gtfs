@@ -20,7 +20,7 @@ const stopTimesObjectGenerator = require('./src/gtfsEntitiesGenerators/stopsTime
 const frequenciesObjectGenerator = require('./src/gtfsEntitiesGenerators/frequenciesObjectGenerator');
 const shapesObjectGenerator = require('./src/gtfsEntitiesGenerators/shapesObjectGenerator');
 
-module.exports = async function geoJson2gtfs(settingsFile, geoJsonFilesFolder, zipCompression) {
+module.exports = async function geoJson2gtfs(settingsFile, geoJsonFilesFolder, loadAddresses, zipCompression) {
     // toDo: validation for this object
     let settings = jsonReader.geoJsonFileReader(settingsFile);
     settingsHandler.setSettings(settings);
@@ -36,7 +36,7 @@ module.exports = async function geoJson2gtfs(settingsFile, geoJsonFilesFolder, z
     let shapesFileName = 'shapes.txt';
     
     colorprint.info("Starting to fill addresses for coordiantes in the geoJson files \n");
-    await geoJsonFilesFiller(geoJsonFilesFolder);
+    await geoJsonFilesFiller(geoJsonFilesFolder, loadAddresses);
     
     colorprint.info("\n");
     colorprint.info("Starting to write the gtfs files \n");
@@ -126,18 +126,16 @@ module.exports = async function geoJson2gtfs(settingsFile, geoJsonFilesFolder, z
                 let frequencieCsvRow = geoJsonObjectToCsv(frequencie, false);
                 streamFileWriter(gtfsFolderRoute+frequenciesFileName, frequencieCsvRow);
                 colorprint.info(`${frequenciesFileName}  --> \t OK \n`);
-
-                if (zipCompression) {
-                    colorprint.info('lets compress this shit');
-
-                    zipCompressionTool.compressFolder().then(() => console.log("OK"), () => console.log("FAIL"));
-                }
-                else {
-                    colorprint.info(`The files has been saved in ${gtfsFolderRoute} folder`);
-                }
+            }
+            else {
+                colorprint.error(`${geoJsonObjectInput} is an invalid geoJson file !!!`);
+            }
         }
-        else {
-            colorprint.error(`${geoJsonObjectInput} is an invalid geoJson file !!!`);
+
+        colorprint.info(`The files has been saved in ${gtfsFolderRoute} folder \n`);
+        if (zipCompression) {
+            colorprint.info('Starting to compress files');
+            zipCompressionTool.compressFolder(gtfsFolderRoute).then(() => colorprint.info('gtfs.zip generated'), () => colorprint.fatal('Error trying generating zip file'));
         }
     }
-}
+    

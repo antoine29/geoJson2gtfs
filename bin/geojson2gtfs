@@ -16,9 +16,8 @@ const options = yargs
  .option("z", { alias: "zip compression", describe: "Compress the generated files in a zip file", type: "boolean", demandOption: false })
  .argv;
 
-
  colorprint.notice(`\n`);
  colorprint.notice(`Selected input folder: ${options.input}`);
  colorprint.notice(`Selected settings file: ${options.settings} \n`);
- let reloadFlag = options.fr ? true : false;
- geojson2gtfs(options.settings, options.input, options.z);
+
+ geojson2gtfs(options.settings, options.input, options.r, options.z);
