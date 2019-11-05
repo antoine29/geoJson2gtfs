@@ -1,6 +1,6 @@
 {
   "name": "geojson2gtfs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A tiny nodeJs cli app to transform geoJson files (describing an onDemand informal public transport routes) to its corresponding GTFS entities.",
   "main": "bin/index.js",
   "scripts": {
