@@ -35,7 +35,7 @@ module.exports = async function geoJson2gtfs(settingsFile, geoJsonFilesFolder, l
     let frequenciesFileName = 'frequencies.txt';
     let shapesFileName = 'shapes.txt';
     
-    colorprint.info("Starting to fill addresses for coordiantes in the geoJson files \n");
+    colorprint.info("Starting to fill addresses for coordinates in the geoJson files \n");
     await geoJsonFilesFiller(geoJsonFilesFolder, loadAddresses);
     
     colorprint.info("\n");

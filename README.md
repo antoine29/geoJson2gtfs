@@ -1,61 +1,10 @@
 # geojson2gtfs 
 
-Geojson2gtfs is a tiny nodeJs shell aplication to transform [geoJson](https://geojson.org/) files (describing [Hail and Ride](https://en.wikipedia.org/wiki/Hail_and_ride) transport routes) to a [GTFS](https://gtfs.org/) dataset zip.
-
-<!-- 
-* Size Limit calculates **the time** it would take a browser
-  to download and **execute** your JS. Time is a much more accurate
-  and understandable metric compared to the size in bytes.
-* Size Limit calculations include **all dependencies and polyfills**
-  used in your JS.
-* Add Size Limit to **Travis CI**, **Circle CI**, or another CI system
-  to know if a pull request adds a massive dependency.
-* Size Limit is **modular** to fit different use cases, like big JS applications
-  that use their own bundler or small npm libraries with many files.
--->
-<!-- <p align="center">
-  <img src="./img/example.png" alt="Size Limit CLI" width="738">
-</p>
-
-With `--why`, Size Limit can tell you *why* your library is of this size
-and show the real cost of all your internal dependencies.
-
-<p align="center">
-  <img src="./img/why.png" alt="Bundle Analyzer example" width="650">
-</p> -->
-
-<!-- <p align="center">
-  <a href="https://evilmartians.com/?utm_source=size-limit">
-    <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg"
-         alt="Sponsored by Evil Martians" width="236" height="54">
-  </a>
-</p>
- -->
-<!-- [cult-img]: http://cultofmartians.com/assets/badges/badge.svg
-[cult]:     http://cultofmartians.com/tasks/size-limit-config.html -->
-
-<!-- ## Who Uses Size Limit
-
-* [MobX](https://github.com/mobxjs/mobx)
-* [Material-UI](https://github.com/callemall/material-ui)
-* [Autoprefixer](https://github.com/postcss/autoprefixer)
-* [PostCSS](https://github.com/postcss/postcss) reduced
-  [25% of the size](https://github.com/postcss/postcss/commit/150edaa42f6d7ede73d8c72be9909f0a0f87a70f).
-* [Browserslist](https://github.com/ai/browserslist) reduced
-  [25% of the size](https://github.com/ai/browserslist/commit/640b62fa83a20897cae75298a9f2715642531623).
-* [EmojiMart](https://github.com/missive/emoji-mart) reduced
-  [20% of the size](https://github.com/missive/emoji-mart/pull/111)
-* [nanoid](https://github.com/ai/nanoid) reduced
-  [33% of the size](https://github.com/ai/nanoid/commit/036612e7d6cc5760313a8850a2751a5e95184eab).
-* [React Focus Lock](https://github.com/theKashey/react-focus-lock) reduced
-  [32% of the size](https://github.com/theKashey/react-focus-lock/pull/48).
-* [Logux](https://github.com/logux) reduced
-  [90% of the size](https://github.com/logux/logux-client/commit/62b258e20e1818b23ae39b9c4cd49e2495781e91).
- -->
+Geojson2gtfs is a tiny shell application (written in javascript and distributed as a npm package) to transform [geoJson](https://geojson.org/) files (describing [Hail and Ride](https://en.wikipedia.org/wiki/Hail_and_ride) transport routes) to a [GTFS](https://gtfs.org/) data set.
 
 ## How It Works
 1. Each geoJson file should have an **'Agency'** or **'Agencia'** field, this field is
-    used to generate the GTFS route. Else the application will ignore that file.
+    used to generate a GTFS agency and route. Else the application will ignore that file.
 2. Each geoJson file should have only one geoJson line. Else the application will ignore
     that file.
 3. You could use the awesome **geojson.io** tool to draw your routes and
@@ -63,95 +12,38 @@ and show the real cost of all your internal dependencies.
 4. Since an on demand transport route have not a defined number of stops, we recommend
     draw a point for each block/corner of the route.
 5. The application will set one GTFS stop for each point of the geojson line and one
-    route for each geojson file
-6. You can find some geojson files used to test this application here [repo de lpz
-    informal routes]
+    route for each geojson file.
+6. Additionally you must provide a `*.json` file with some extra settings for the GTFS generation. The settings file must follow the next format: 
 
-<!--
-1. Size Limit contains a CLI tool, 3 plugins (`file`, `webpack`, `time`)
-   and 3 plugin presets for popular use cases (`app`, `big-lib`, `small-lib`).
-   A CLI tool finds plugins in `package.json` and loads the config.
-2. If you use the `webpack` plugin, Size Limit will bundle your JS files into
-   a single file. It is important to track dependencies and webpack polyfills.
-   It is also useful for small libraries with many small files and without
-   a bundler.
-3. The `webpack` plugin creates an empty webpack project, adds your library
-   and looks for the bundle size difference.
-4. The `time` plugin compares the current machine performance with that of
-   a low-priced Android devices to calculate the CPU throttling rate.
-5. Then the `time` plugin runs headless Chrome (or desktop Chrome if it’s
-   available) to track the time a browser takes to compile and execute your JS.
--->
-
+  ```sh
+      {
+  	    "agencySettings": {
+  	    	"agencyTimeZone": "America/Caracas",
+  	    	"agencyUrl": "https://github.com/antoine29"
+  	    },
+  	    "calendarSettings": [{
+  	    	"serviceId": "mon-sun",
+  	    	"startDate": "20120101",
+  	    	"endDate": "20301212",
+  	    	"serviceDays": [1, 1, 1, 1, 1, 1, 1]
+  	    }, {
+  	    	"serviceId": "mon-fri",
+  	    	"startDate": "20120101",
+  	    	"endDate": "20301212",
+  	    	"serviceDays": [1, 1, 1, 1, 1, 0, 0]
+  	    }],
+  	    "frequencies": [{
+  	    	"startTime": "00:00:00",
+  	    	"endTime": "24:00:00",
+  	    	"exactTimes": 0,
+  	    	"headwaySecs": 600
+  	    }]
+      }
+  ```
 ## Usage
 
-#### First of all you'll need **nodeJs v10** and **npm** installed and working.
-
-### Installation
-
-<!--
-<details><summary><b>Show instructions</b></summary>
-
-1. Install the preset:
-
-    ```sh
-    $ npm install --save-dev @size-limit/preset-app
-    ```
-
-2. Add the `size-limit` section and the `size` script to your `package.json`:
-
-    ```diff
-    + "size-limit": [
-    +   {
-    +     "path": "dist/app-*.js"
-    +   }
-    + ],
-      "scripts": {
-        "build": "webpack ./webpack.config.js",
-    +   "size": "npm run build && size-limit",
-        "test": "jest && eslint ."
-      }
-    ```
-
-3. Here’s how you can get the size for your current project:
-
-    ```sh
-    $ npm run size
-
-      Package size: 30.08 KB with all dependencies, minified and gzipped
-      Loading time: 602 ms   on slow 3G
-      Running time: 214 ms   on Snapdragon 410
-      Total time:   815 ms
-    ```
-
-4. Now, let’s set the limit. Add 25% to the current total time and use that as
-   the limit in your `package.json`:
-
-    ```diff
-      "size-limit": [
-        {
-    +     "limit": "1 s",
-          "path": "dist/app-*.js"
-        }
-      ],
-    ```
-
-5. Add the `size` script to your test suite:
-
-    ```diff
-      "scripts": {
-        "build": "webpack ./webpack.config.js",
-        "size": "npm run build && size-limit",
-    -   "test": "jest && eslint ."
-    +   "test": "jest && eslint . && npm run size"
-      }
-    ```
-
-6. If you don’t have a continuous integration service running, don’t forget
-   to add one — start with [Travis CI].
-
-</details>
--->
+#### * You'll need a **nodeJs v10** and **npm** working installation.
+#### * The application was developed/tested in a Debian/Linux enviroment. The functionally was not tested in a Windows enviroment.
 
 1. Install the application (npm package) globally:
 
@@ -159,297 +51,46 @@ and show the real cost of all your internal dependencies.
     $ npm install geojson2gtfs -g
     ```
 
-2. You should be able to call geojson2gtfs help command
+2. If the installation went well, you should be able to see the geojson2gtfs version
 
+    ```sh
+    $ geojson2gtfs --version
+    1.0.1
+    ```
+
+3. You can see the available options using the `geojson2gtfs -h` command.
     ```sh
     $ geojson2gtfs -h
+
+      Usage: geojson2gtfs -i [folder] -s [jsonFile]
+      Options:
+      --version              Show version number                           [boolean]
+      -h, --help             Show help                                     [boolean]
+      -i, --input            Input path to folder containing geoJson files.
+                                                                 [string] [required]
+      -s, --settings         Aditional settings file to handle the GTFS feed
+                             creation.                           [string] [required]
+      --fr, --forceReload    Force the reload of the geoJson files         [boolean]
+      -z, --zip compression  Compress the generated files in a zip file    [boolean]
     ```
+  
+4. To generate a GTFS dataset you must pass at least these two flags:
+    * `-i {geojsonFilesFolder}` the folder containing the geojson files.
+    * `-s {aditionalSettings}` a file with aditional settings.
 
-2. Add the `size-limit` section and the `size` script to your `package.json`:
+5. Aditionally you could pass the `-z` flag to generate a `GTFS.zip` dataset file. Else a folder called `GTFS` containing all generated files will be created. Both (folder or zip file) will be generated at the same route where the command was executed.
 
-    ```diff
-    + "size-limit": [
-    +   {
-    +     "path": "dist/app-*.js"
-    +   }
-    + ],
-      "scripts": {
-        "build": "webpack ./webpack.config.js",
-    +   "size": "npm run build && size-limit",
-        "test": "jest && eslint ."
-      }
-    ```
+6. Next is an example using the geojson files of some of the infomal transport routes from La Paz city. These files can be founded in this [repository](https://github.com/antoine29/LaPazPublicTransportRoutes)
 
-3. Here’s how you can get the size for your current project:
+    `$ geojson2gtfs -i LaPazPublicTransportRoutes/Routes/ -s settings.json -z`
 
-    ```sh
-    $ npm run size
+    <p align="center">
+      <img src="./example.gif" alt="Size Limit CLI" width="738">
+    </p>
 
-      Package size: 30.08 KB with all dependencies, minified and gzipped
-      Loading time: 602 ms   on slow 3G
-      Running time: 214 ms   on Snapdragon 410
-      Total time:   815 ms
-    ```
 
-4. Now, let’s set the limit. Add 25% to the current total time and use that as
-   the limit in your `package.json`:
+## WP:
 
-    ```diff
-      "size-limit": [
-        {
-    +     "limit": "1 s",
-          "path": "dist/app-*.js"
-        }
-      ],
-    ```
-
-5. Add the `size` script to your test suite:
-
-    ```diff
-      "scripts": {
-        "build": "webpack ./webpack.config.js",
-        "size": "npm run build && size-limit",
-    -   "test": "jest && eslint ."
-    +   "test": "jest && eslint . && npm run size"
-      }
-    ```
-
-6. If you don’t have a continuous integration service running, don’t forget
-   to add one — start with [Travis CI].
-
-
-### Big Libraries
-
-JS libraries > 10 KB in size.
-
-This preset includes headless Chrome, and will measure your lib’s execution
-time. You likely don’t need this overhead for a small 2 KB lib, but for larger
-ones the execution time is a more accurate and understandable metric that
-the size in bytes. Library like [React] is a good example for this preset.
-
-<details><summary><b>Show instructions</b></summary>
-
-1. Install preset:
-
-    ```sh
-    $ npm install --save-dev @size-limit/preset-big-lib
-    ```
-
-2. Add the `size-limit` section and the `size` script to your `package.json`:
-
-    ```diff
-    + "size-limit": [
-    +   {
-    +     "path": "dist/react.production-*.js"
-    +   }
-    + ],
-      "scripts": {
-        "build": "webpack ./scripts/rollup/build.js",
-    +   "size": "npm run build && size-limit",
-        "test": "jest && eslint ."
-      }
-    ```
-
-3. Here’s how you can get the size for your current project:
-
-    ```sh
-    $ npm run size
-
-      Package size: 30.08 KB with all dependencies, minified and gzipped
-      Loading time: 602 ms   on slow 3G
-      Running time: 214 ms   on Snapdragon 410
-      Total time:   815 ms
-    ```
-
-4. Now, let’s set the limit. Add 25% to the current total time and use that
-   as the limit in your `package.json`:
-
-    ```diff
-      "size-limit": [
-        {
-    +     "limit": "1 s",
-          "path": "dist/react.production-*.js"
-        }
-      ],
-    ```
-
-5. Add a `size` script to your test suite:
-
-    ```diff
-      "scripts": {
-        "build": "rollup ./scripts/rollup/build.js",
-        "size": "npm run build && size-limit",
-    -   "test": "jest && eslint ."
-    +   "test": "jest && eslint . && npm run size"
-      }
-    ```
-
-6. If you don’t have a continuous integration service running, don’t forget
-   to add one — start with [Travis CI].
-7. Add the library size to docs, it will help users to choose your project:
-
-    ```diff
-      # Project Name
-
-      Short project description
-
-      * **Fast.** 10% faster than competitor.
-    + * **Small.** 15 KB (minified and gzipped).
-    +   [Size Limit](https://github.com/ai/size-limit) controls the size.
-    ```
-
-</details>
-
-
-### Small Libraries
-
-JS libraries < 10 KB in size.
-
-This preset will only measure the size, without the execution time, so it’s
-suitable for small libraries. If your library is larger, you likely want
-the Big Libraries preset above. [Nano ID] or [Storeon] are good examples
-for this preset.
-
-<details><summary><b>Show instructions</b></summary>
-
-1. First, install `size-limit`:
-
-    ```sh
-    $ npm install --save-dev @size-limit/preset-small-lib
-    ```
-
-2. Add the `size-limit` section and the `size` script to your `package.json`:
-
-    ```diff
-    + "size-limit": [
-    +   {
-    +     "path": "index.js"
-    +   }
-    + ],
-      "scripts": {
-    +   "size": "size-limit",
-        "test": "jest && eslint ."
-      }
-    ```
-
-3. Here’s how you can get the size for your current project:
-
-    ```sh
-    $ npm run size
-
-      Package size: 177 B with all dependencies, minified and gzipped
-    ```
-
-4. If your project size starts to look bloated, run `--why` for analysis:
-
-    ```sh
-    $ npm run size -- --why
-    ```
-
-5. Now, let’s set the limit. Determine the current size of your library,
-   add just a little bit (a kilobyte, maybe) and use that as the limit
-   in your `package.json`:
-
-    ```diff
-     "size-limit": [
-        {
-    +     "limit": "9 KB",
-          "path": "index.js"
-        }
-     ],
-    ```
-
-6. Add the `size` script to your test suite:
-
-    ```diff
-      "scripts": {
-        "size": "size-limit",
-    -   "test": "jest && eslint ."
-    +   "test": "jest && eslint . && npm run size"
-      }
-    ```
-
-7. If you don’t have a continuous integration service running, don’t forget
-   to add one — start with [Travis CI].
-8. Add the library size to docs, it will help users to choose your project:
-
-    ```diff
-      # Project Name
-
-      Short project description
-
-      * **Fast.** 10% faster than competitor.
-    + * **Small.** 500 bytes (minified and gzipped). No dependencies.
-    +   [Size Limit](https://github.com/ai/size-limit) controls the size.
-    ```
-
-</details>
-
-[Travis CI]: https://github.com/dwyl/learn-travis
-[Storeon]: https://github.com/ai/storeon/
-[Nano ID]: https://github.com/ai/nanoid/
-[React]: https://github.com/facebook/react/
-
-
-## Config
-
-Size Limits supports three ways to define config.
-
-1. `size-limit` section in `package.json`:
-
-   ```json
-     "size-limit": [
-       {
-         "path": "index.js",
-         "limit": "500 ms"
-       }
-     ]
-   ```
-
-2. or a separate `.size-limit.json` config file:
-
-   ```js
-   [
-     {
-       "path": "index.js",
-       "limit": "500 ms"
-     }
-   ]
-   ```
-
-3. or a more flexible `.size-limit.js` config file:
-
-   ```js
-   module.exports = [
-     {
-       path: "index.js",
-       limit: "500 ms"
-     }
-   ]
-   ```
-
-Each section in the config can have these options:
-
-* **path**: relative paths to files. The only mandatory option.
-  It could be a path `"index.js"`, a [pattern] `"dist/app-*.js"`
-  or an array `["index.js", "dist/app-*.js", "!dist/app-exclude.js"]`.
-* **entry**: when using a custom webpack config, a webpack entry could be given.
-  It could be a string or an array of strings.
-  By default, the total size of all entry points will be checked.
-* **limit**: size or time limit for files from the `path` option. It should be
-  a string with a number and unit, separated by a space.
-  Format: `100 B`, `10 KB`, `500 ms`, `1 s`.
-* **name**: the name of the current section. It will only be useful
-  if you have multiple sections.
-* **webpack**: with `false` it will disable webpack.
-* **running**: with `false` it will disable calculating running time.
-* **gzip**: with `false` it will disable gzip compression.
-* **config**: a path to a custom webpack config.
-* **ignore**: an array of files and dependencies to exclude from
-  the project size calculation.
-
-If you use Size Limit to track the size of CSS files, make sure to set
-`webpack: false`. Otherwise, you will get wrong numbers, because webpack
-inserts `style-loader` runtime (≈2 KB) into the bundle.
-
-[pattern]: https://github.com/sindresorhus/globby#globbing-patterns
+  * Unitests
+  * Adding more GTFS fields using the `settings.json` file
+  * Refactor the transformation methods using the strategy pattern or another design pattern.
